@@ -4,21 +4,27 @@ class NavBar extends StatelessWidget {
   @override
   Widget build(context) {
     return Drawer(
+      elevation: 0.0,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           const UserAccountsDrawerHeader(
-            accountName: Text('Bader Awad'),
-            accountEmail: Text('bader33.awad@gmail.com'),
+            accountName: Text('Bader Awad',style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold
+            ),),
+            accountEmail: Text('bader33.awad@gmail.com',style: TextStyle(
+              color: Colors.white, fontSize: 14
+            ),),
             currentAccountPicture: CircleAvatar(
-              backgroundImage: AssetImage("assets/images/profile.jpg"),
+              backgroundImage: AssetImage("assets/images/Profile.jpg"),
               radius: 50,
             ),
             decoration: BoxDecoration(
-                color: Colors.cyan,
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage("assets/images/r.jpg"))),
+              color: Colors.black87,
+                // image: DecorationImage(
+                //     fit: BoxFit.cover,
+                //     image: AssetImage("assets/images/R.jpg"))
+              ),
           ),
           ListTile(
             leading: const Icon(Icons.email),
