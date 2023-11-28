@@ -7,8 +7,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Scaffold(
+    return Scaffold(
         drawer: NavBar(),
         appBar: AppBar(
             backgroundColor: Colors.cyan.shade800,
@@ -16,27 +15,32 @@ class HomeScreen extends StatelessWidget {
               'Home Page',
               style: GoogleFonts.lato(
                 color: Colors.white,
-                fontSize: 27,
+                fontSize: 24,
               ),
             )),
-      ),
-      Container(
-          width: double.infinity,
-          height: 40,
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(20)),
-          child: Center(
-              child: TextField(
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.search),
-              suffixIcon: IconButton(
-                icon: const Icon(Icons.clear),
-                onPressed: () {},
-              ),
-              hintText: 'Search...',
-              border: InputBorder.none,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade200, borderRadius: BorderRadius.circular(20)),
+                child: TextField(
+                                decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.search),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {},
+                ),
+                hintText: 'Search...',
+                border: InputBorder.none,
+                                ),
+                              ),
             ),
-          )))
-    ]);
+          ),
+        ],
+      )
+    );
   }
 }
+
