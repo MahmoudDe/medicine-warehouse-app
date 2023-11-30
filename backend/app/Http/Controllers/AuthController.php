@@ -27,11 +27,18 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        $token=$user->createToken('myapptoken')->plainTextToken;
 
-        return response()->json([
-            'user' => $user,
-            'token' => $user->createToken($request->device_name)->plainTextToken,
-        ], 201);
+        $response=[
+            'user'=>$user,
+            'token'=>$token
+        ];
+        return response($response,201);
+        
+        // return response()->json([
+        //     'user' => $user,
+        //     'token' => $user->createToken($request->device_name)->plainTextToken,
+        // ], 201);
     }
 
     /**
@@ -42,10 +49,12 @@ class AuthController extends Controller
     $request->validate([
         'email' => 'required|string|email',
         'password' => 'required|string',
-        'device_name' => 'required',
+        // 'device_name' => 'required',
     ]);
 
     $user = User::where('email', $request->email)->first();
+
+  
 
     if (! $user || ! Hash::check($request->password, $user->password)) {
         throw ValidationException::withMessages([
@@ -66,6 +75,9 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+
+        // auth()->user()->tokens()->delete
+
         Log::info($request->user());
         Log::info($request->header('Authorization'));
     

@@ -16,15 +16,6 @@ class MedicineController extends Controller
 
         return response()->json($medicines);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -40,17 +31,13 @@ class MedicineController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return Medicine::find($id);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function search($category)
     {
-        //
-    }
 
+        return Medicine::where('category', 'like', '%'.$category.'%')->get();
+    }
     /**
      * Update the specified resource in storage.
      */
