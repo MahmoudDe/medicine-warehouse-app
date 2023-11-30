@@ -36,7 +36,6 @@ Route::delete('/medicines/{medicine}', [MedicineController::class, 'destroy']);
 
 // User Routes 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-
     return $request->user();
 });
 
