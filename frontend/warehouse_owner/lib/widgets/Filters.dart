@@ -76,9 +76,9 @@ class _FiltersState extends State<Filters> {
             padding: const EdgeInsets.all(16.0),
             child: CustomElevatedButton(
               onPressed: () {
-                // Navigate to the page for adding medicines
+                Navigator.pushNamed(context, '/make_category');
               },
-              text: 'Add Medicine',
+              text: 'Add Category',
             ),
           ),
         ],

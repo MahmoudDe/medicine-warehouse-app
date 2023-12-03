@@ -4,6 +4,7 @@ import 'package:warehouse_owner_app/screens/HomePage.dart';
 import 'package:warehouse_owner_app/screens/LoginPage.dart';
 import 'package:warehouse_owner_app/screens/NewMedicine.dart';
 import 'package:warehouse_owner_app/screens/Orders.dart';
+import 'package:warehouse_owner_app/widgets/CategoryInput.dart';
 import 'Provider/Medicine_Provider.dart';
 
 void main() {
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomeScreen(),
         '/orders': (context) => OrderPage(),
         '/make_medicine': (context) => NewMedicineForm(),
+        '/make_category': (context) => CategoryInput(),
         LoginPage.routeName: (context) =>  LoginPage()
       },
     );

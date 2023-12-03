@@ -86,4 +86,32 @@ class Server {
       return [];
     }
   }
+  Future<void> addCategory(Map<String, dynamic> category) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+
+    var options = Options(
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      },
+    );
+
+    try {
+      var response = await _dio.post(
+        'http://localhost:8000/api/admin/categories', // replace with your API URL
+        data: category,
+        options: options,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('Category created successfully');
+      } else {
+        print('Failed to create category');
+      }
+    } catch (e) {
+      print('Request failed with error: $e');
+    }
+  }
+
 }
