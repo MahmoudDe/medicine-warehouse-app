@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\category;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Medicine extends Model
 {
@@ -17,11 +18,17 @@ class Medicine extends Model
     protected $fillable = [
         'scientific_name',
         'commercial_name',
-        'category',
+        'categories_id',
         'manufacturing_company',
+        'image',
         'quantities',
         'expiry_date',
         'price',
         'slug',
+        'logo'
     ];
+    public function category()
+    {
+       return $this->belongsTo(category::class,'categories_id');
+    }
 }

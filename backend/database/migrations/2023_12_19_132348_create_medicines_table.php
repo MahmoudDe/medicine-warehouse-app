@@ -15,14 +15,17 @@ class CreateMedicinesTable extends Migration
     {
         Schema::create('medicines', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('categories_id')->constrained()->onDelete('cascade');
             $table->string('scientific_name');
             $table->string('commercial_name');
-            $table->string('category');
             $table->string('manufacturing_company');
+            $table->string('image')->nullable();
             $table->integer('quantities');
             $table->date('expiry_date');
             $table->decimal('price', 8, 2);
             $table->string('slug')->unique();
+            $table->string('logo')->nullable();
+
             $table->timestamps();
         });
     }

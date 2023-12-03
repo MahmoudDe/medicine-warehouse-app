@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Routing\Controller;
 
 
 class AuthController extends Controller
@@ -33,12 +35,9 @@ class AuthController extends Controller
             'user'=>$user,
             'token'=>$token
         ];
+
         return response($response,201);
         
-        // return response()->json([
-        //     'user' => $user,
-        //     'token' => $user->createToken($request->device_name)->plainTextToken,
-        // ], 201);
     }
 
     /**
@@ -49,7 +48,7 @@ class AuthController extends Controller
     $request->validate([
         'email' => 'required|string|email',
         'password' => 'required|string',
-        // 'device_name' => 'required',
+        
     ]);
 
     $user = User::where('email', $request->email)->first();
@@ -61,12 +60,13 @@ class AuthController extends Controller
             'email' => ['The provided credentials are incorrect.'],
         ]);
     }
-
-    return response()->json([
-        'message' => 'You have logged in successfully.',
-        'user' => $user,
-        'token' => $user->createToken($request->device_name)->plainTextToken,
-    ]);
+           
+    return response()
+     ->json([
+         'message' => 'You have logged in successfully.',
+         'user' => $user,
+         'token' => $user->createToken('myapptoken')->plainTextToken,
+     ]);
 }
 
 
@@ -76,10 +76,9 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
 
-        // auth()->user()->tokens()->delete
 
-        Log::info($request->user());
-        Log::info($request->header('Authorization'));
+        // Log::info($request->user());
+        // Log::info($request->header('Authorization'));
     
         $request->user()->currentAccessToken()->delete();
     

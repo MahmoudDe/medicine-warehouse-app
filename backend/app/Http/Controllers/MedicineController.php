@@ -22,7 +22,10 @@ class MedicineController extends Controller
     public function store(Request $request)
     {
         $medicine = Medicine::create($request->all());
-
+            //  store log if we want
+         if ($request->hasFile('image')){
+             $request->file('image')->store('logos','public');
+          }
         return response()->json($medicine, 201);
     }
 
@@ -33,10 +36,14 @@ class MedicineController extends Controller
     {
         return Medicine::find($id);
     }
-    public function search($category)
+    public function search($search)
     {
 
-        return Medicine::where('category', 'like', '%'.$category.'%')->get();
+        return Medicine::where('category', 'like', '%'.$search.'%')
+        ->orwhere('manufacturing_company', 'like', '%'.$search.'%')
+        ->orwhere('slug', 'like', '%'.$search.'%')
+        ->orwhere('scientific_name', 'like', '%'.$search.'%')
+        ->orwhere('commercial_name', 'like', '%'.$search.'%')->get();
     }
     /**
      * Update the specified resource in storage.
