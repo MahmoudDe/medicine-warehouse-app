@@ -44,9 +44,6 @@ Route::group((['middleware' => ['auth:sanctum']]), function () {
 
 });
 
-
-
-
 // protected for store user
 // group what can admin  do 
 Route::group((['prefix'=>'admin','middleware' => ['auth:sanctum']]), function () {
