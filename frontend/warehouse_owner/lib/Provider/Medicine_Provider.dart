@@ -115,6 +115,33 @@ void resetFilter() {
       return [];
     }
   }
+// fetch medicines in certain category
+  Future<List<Medicine>> getMedicinesByCategory(String category) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      Dio _dio = Dio(
+        BaseOptions(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+          },
+        ),
+      );
+
+      var response = await _dio.get('http://localhost:8000/api/medicines/search/$category');
+      print('Response data: ${response.data}'); // Add this line
+      if (response.statusCode == 200) {
+        return List<Medicine>.from(response.data.map((item) => Medicine.fromJson(item)));
+      } else {
+        print('Failed to fetch medicines');
+        return [];
+      }
+    } catch (e) {
+      print('Request failed with error: $e');
+      return [];
+    }
+  }
 
 
 }
