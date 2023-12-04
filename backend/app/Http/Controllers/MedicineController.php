@@ -50,13 +50,16 @@ class MedicineController extends Controller
 
     public function search($search)
     {
+
         return Medicine::where('category', 'like', '%'.$search.'%')
             ->orwhere('manufacturer', 'like', '%'.$search.'%')
             ->orwhere('slug', 'like', '%'.$search.'%')
             ->orwhere('scientific_name', 'like', '%'.$search.'%')
             ->orwhere('commercial_name', 'like', '%'.$search.'%')->get();
     }
-
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, Medicine $medicine)
     {
         $validatedData = $request->validate([

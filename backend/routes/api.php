@@ -5,6 +5,8 @@ use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderItemController;
 
 require __DIR__ . '/auth.php';
 
@@ -19,6 +21,9 @@ require __DIR__ . '/auth.php';
 |
 */
 
+
+/*Medicine Routes*/
+
 // Medicine Routes for public 
 
 
@@ -28,16 +33,16 @@ Route::post('/users/register', [AuthController::class, 'register']);
 // to login 
 Route::post('/users/login', [AuthController::class, 'login']);
 
-    // Return All Medicines from Database 
+// Return All Medicines from Database 
 
 Route::get('/medicines', [MedicineController::class, 'index']);
 
-    // Return All categories from Database 
+// Return All categories from Database 
 
-    Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/categories', [CategoryController::class, 'index']);
 
 
-    
+
 Route::group((['middleware' => ['auth:sanctum']]), function () {
 
 
@@ -47,16 +52,19 @@ Route::group((['middleware' => ['auth:sanctum']]), function () {
     // Show By Categories (Filtering)
     Route::get('/medicines/search/{category}', [MedicineController::class, 'search']);
 
-    // logout
-    Route::post('/users/logout', [AuthController::class, 'logout']);
+    // useres api 
+    // to register
+    // Route::post('/users/register', [AuthController::class, 'register']);
+    // to login 
+    // Route::post('/users/login', [AuthController::class, 'login']);
+    //to logout
+    // Route::post('/users/logout', [AuthController::class, 'logout']);
 
 });
 
 // protected for store user
 // group what can admin  do 
-Route::group((['prefix'=>'admin','middleware' => ['auth:sanctum']]), function () {
-
- 
+Route::group((['prefix' => 'admin', 'middleware' => ['auth:sanctum']]), function () {
 
     // Show By one (Medicine Card) 
     Route::get('/medicines/{medicines}', [MedicineController::class, 'show']);
@@ -70,23 +78,62 @@ Route::group((['prefix'=>'admin','middleware' => ['auth:sanctum']]), function ()
     // To Delete Medicine :: Used By Admin
     Route::delete('/medicines/{medicine}', [MedicineController::class, 'destroy']);
 
-
     // Show By Categories (Filtering)
     Route::get('/medicines/search/{category}', [MedicineController::class, 'search']);
-    
 
-
-    // To Create New Medicine :: Used By Admin  
+    // To Create New Category :: Used By Admin  
     Route::post('/categories', [CategoryController::class, 'store']);
+});
 
-    // logout
-    Route::post('/users/logout', [AuthController::class, 'logout']);
-    });
 
-// User Routes 
+/*User Routes*/
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
     return $request->user();
 });
 
-// Order Routes
+
+/*Order Routes*/
+
+// Show All Orders
+Route::get('/orders', [OrderController::class, 'index']);
+
+// Create New Order :: User
+Route::post('/orders', [OrderController::class, 'store']);
+
+// Show Order by order_id
+Route::get('/orders/{order}', [OrderController::class, 'show']);
+
+// Update order
+Route::put('/orders/{order}', [OrderController::class, 'update']);
+
+// Delete Order
+Route::delete('/orders/{order}', [OrderController::class, 'destroy']);
+
+// To Accept Order :: Admin
+Route::post('orders/{order}/accept', [OrderController::class, 'acceptOrder']);
+
+// To Reject Order :: Admin
+Route::post('orders/{order}/reject', [OrderController::class, 'rejectOrder']);
+
+
+
+
+/*OrderItem Routes*/
+
+
+// Show All OrderItems
+Route::get('/order_items', [OrderItemController::class, 'index']);
+
+Route::post('/order_items', [OrderItemController::class, 'store']);
+
+Route::get('/order_items/{order_item}', [OrderItemController::class, 'show']);
+
+Route::put('/order_items/{orders_item}', [OrderItemController::class, 'update']);
+
+Route::delete('order_items/{order_item}', [OrderItemController::class, 'destroy']);
+
+
+// Get OrderItems By order_id
+Route::get('/order_items/order/{order}', [OrderItemController::class, 'getOrder']);
