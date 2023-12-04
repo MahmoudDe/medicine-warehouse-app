@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medicine_warehouse/screens/NavBar.dart';
+import 'package:medicine_warehouse/screens/nav_bar.dart';
+import 'package:medicine_warehouse/screens/categories.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -20,10 +21,11 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Colors.cyan.shade800,
           elevation: 0.0,
           iconTheme: const IconThemeData(color: Colors.white, size: 28),
-          title: Text('Home Page', style: GoogleFonts.lato(color: Colors.white, fontSize: 22))),
-          body: Column(
-            children: [
-           Padding(
+          title: Text('Home Page',
+              style: GoogleFonts.lato(color: Colors.white, fontSize: 22))),
+      body: Column(
+        children: [
+          Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
               decoration: BoxDecoration(
@@ -54,6 +56,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+          ),
+          Expanded(
+            child: CategoriesScreen(),
           ),
         ],
       ),

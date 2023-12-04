@@ -1,6 +1,6 @@
 import 'package:medicine_warehouse/screens/Profile.dart';
-import '../screens/HomePage.dart';
-import '../screens/SearchPage.dart';
+import '../screens/home_page.dart';
+import '../screens/search_page.dart';
 
 class Constants {
   // ignore: non_constant_identifier_names

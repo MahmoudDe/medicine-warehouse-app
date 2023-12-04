@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../model/constants.dart';
+import '../models/constants.dart';
 
 class NavigationScreen extends StatefulWidget {
   static const String routeName = '/navigation-screen';

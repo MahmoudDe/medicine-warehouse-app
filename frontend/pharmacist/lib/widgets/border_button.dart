@@ -13,7 +13,7 @@ class BorderButton extends StatelessWidget {
       style: ButtonStyle(
         elevation: MaterialStatePropertyAll(0.1),
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) {
+          (Set<MaterialState> states) {
             if (states.contains(MaterialState.pressed))
               return Colors.orangeAccent; // the color when button is pressed
             return Colors.white; // the color when button is not pressed

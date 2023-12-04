@@ -1,29 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:medicine_warehouse/screens/HomePage.dart';
+import 'package:medicine_warehouse/screens/home_page.dart';
 import 'package:medicine_warehouse/screens/navigation_screen.dart';
 import 'package:provider/provider.dart';
 import 'Provider/navigation_controller.dart';
 
 // Import the register and login pages
 import 'package:medicine_warehouse/screens/Auth/Register.dart';
-import 'package:medicine_warehouse/screens/Auth/Login.dart';
+import 'package:medicine_warehouse/screens/Auth/login.dart';
 
 void main() {
   runApp(MyApp(initialRoute: NavigationScreen.routeName));
 }
 
 class MyApp extends StatelessWidget {
-
   final String initialRoute;
 
   MyApp({required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.grey
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(systemNavigationBarColor: Colors.grey));
     return ChangeNotifierProvider(
       create: (context) => NavigationController(),
       child: MaterialApp(
@@ -41,7 +39,7 @@ class MyApp extends StatelessWidget {
           '/register': (context) => RegisterPage(), // Add this line
           '/home': (context) => HomeScreen(),
           '/main': (context) => const NavigationScreen(),
-          NavigationScreen.routeName: (context) =>  LoginPage()
+          NavigationScreen.routeName: (context) => LoginPage()
         },
       ),
     );

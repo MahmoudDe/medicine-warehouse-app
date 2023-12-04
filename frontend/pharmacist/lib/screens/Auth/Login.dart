@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:medicine_warehouse/widgets/BorderButton.dart';
+import 'package:medicine_warehouse/widgets/border_button.dart';
 
 import '../../Paint.dart';
 import '../../widgets/Button.dart';
-import '../../widgets/TextField.dart';
+import '../../widgets/text_field.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -13,7 +13,6 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -23,7 +22,7 @@ class LoginPage extends StatelessWidget {
             Stack(children: [
               CustomPaint(
                 size: Size(MediaQuery.of(context).size.width,
-                    MediaQuery.of(context).size.height/4+ 30),
+                    MediaQuery.of(context).size.height / 4 + 30),
                 painter: WavePainter(),
               ),
               const Padding(
@@ -71,9 +70,7 @@ class LoginPage extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: BorderButton(text: "Register", onPressed: (){
-
-                      }),
+                      child: BorderButton(text: "Register", onPressed: () {}),
                     ),
                   ),
                   Expanded(
