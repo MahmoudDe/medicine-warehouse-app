@@ -15,11 +15,23 @@ class _FiltersState extends State<Filters> {
   final TextEditingController _controller = TextEditingController();
   String selectedCategory = '';
   String searchQuery = '';
+  List<String> categories = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCategories();
+  }
+
+  void fetchCategories() async {
+    final medicineProvider = Provider.of<MedicineProvider>(context, listen: false);
+    categories = await medicineProvider.getCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
     final medicineProvider = Provider.of<MedicineProvider>(context);
-    final categories = medicineProvider.categories.where((category) => category.contains(searchQuery)).toList(); // Filter the categories based on the search query
+    final filteredCategories = categories.where((category) => category.contains(searchQuery)).toList(); // Filter the categories based on the search query
 
     return Container(
       color: Colors.grey.shade200, // Change this color to your preference

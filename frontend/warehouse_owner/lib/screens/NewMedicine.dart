@@ -1,13 +1,14 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-
-import '../Provider/Medicine_Provider.dart';
 import '../Server/server.dart';
 import '../classes/Medicine.dart';
 import '../widgets/BorderButton.dart';
+import '../widgets/DateInput.dart';
+import '../widgets/ImageInput.dart';
+import '../widgets/OptionalField.dart';
 import '../widgets/TextField.dart';
+
 
 class NewMedicineForm extends StatefulWidget {
   @override
@@ -16,26 +17,41 @@ class NewMedicineForm extends StatefulWidget {
 
 class _NewMedicineFormState extends State<NewMedicineForm> {
   final _formKey = GlobalKey<FormState>();
-  final _scientificNameController = TextEditingController();
-  final _commercialNameController = TextEditingController();
-  final _categoryController = TextEditingController();
-  final _manufacturerController = TextEditingController();
-  final _quantityController = TextEditingController();
-  final _expiryDateController = TextEditingController();
-  final _priceController = TextEditingController();
-  final _slugController = TextEditingController();
+  final _medicineData = {
+    'categories_id': '',
+    'scientific_name': '',
+    'commercial_name': '',
+    'category': '',
+    'manufacturer': '',
+    'quantity': '',
+    'expiry_date': '',
+    'price': '',
+    'image': '', // Add this line
+  };
 
+  void _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      print('Form data:');
+      _medicineData.forEach((key, value) {
+        print('$key: $value');
+      });
+      // Create an instance of your Server class
+      Server server = Server();
+      // Call the addMedicine method with _medicineData
+      await server.addMedicine(_medicineData);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    DateTime selectedDate = DateTime.now();
     return Scaffold(
-      appBar:  AppBar(
-      backgroundColor: Colors.cyan.shade800,
-      elevation: 0.0,
-      iconTheme: const IconThemeData(color: Colors.white, size: 28),
-      title: Text('Add a new medicine', style: GoogleFonts.lato(color: Colors.white, fontSize: 22)),
-    ),
+      appBar: AppBar(
+        backgroundColor: Colors.cyan.shade800,
+        elevation: 0.0,
+        iconTheme: const IconThemeData(color: Colors.white, size: 28),
+        title: Text('Add a new medicine', style: GoogleFonts.lato(color: Colors.white, fontSize: 22)),
+      ),
       body: SingleChildScrollView(
         child: Center(
           child: Container(
@@ -47,115 +63,69 @@ class _NewMedicineFormState extends State<NewMedicineForm> {
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
-                      CustomTextField(
-                        controller: _scientificNameController,
+                      OptionalTextField(
+                        controller: TextEditingController(),
+                        hintText: 'Categories ID',
+                        onChanged: (value) {
+                          _medicineData['categories_id'] = value;
+                        },
+                      ),
+                      OptionalTextField(
+                        controller: TextEditingController(),
                         hintText: 'Scientific Name',
-                        prefixIcon: Icons.medical_services,
+                        onChanged: (value) {
+                          _medicineData['scientific_name'] = value;
+                        },
                       ),
-                      SizedBox(height: 20),
-                      CustomTextField(
-                        controller: _commercialNameController,
+                      OptionalTextField(
+                        controller: TextEditingController(),
                         hintText: 'Commercial Name',
-                        prefixIcon: Icons.medical_services,
+                        onChanged: (value) {
+                          _medicineData['commercial_name'] = value;
+                        },
                       ),
-                      SizedBox(height: 20),
-                      CustomTextField(
-                        controller: _categoryController,
+                      OptionalTextField(
+                        controller: TextEditingController(),
                         hintText: 'Category',
-                        prefixIcon: Icons.category,
+                        onChanged: (value) {
+                          _medicineData['category'] = value;
+                        },
                       ),
-                      SizedBox(height: 20),
-                      CustomTextField(
-                        controller: _manufacturerController,
+                      OptionalTextField(
+                        controller: TextEditingController(),
                         hintText: 'Manufacturer',
-                        prefixIcon: Icons.business,
+                        onChanged: (value) {
+                          _medicineData['manufacturer'] = value;
+                        },
                       ),
-                      SizedBox(height: 20),
-                      CustomTextField(
-                        controller: _quantityController,
+                      OptionalTextField(
+                        controller: TextEditingController(),
                         hintText: 'Quantity',
-                        prefixIcon: Icons.format_list_numbered,
-                      ),
-                      SizedBox(height: 20),
-                      TextFormField(
-                        controller: _expiryDateController,
-                        decoration: InputDecoration(
-                          hintText: 'Expiry Date',
-                          prefixIcon: Icon(Icons.calendar_today),
-                        ),
-                        onTap: () async {
-                          FocusScope.of(context).requestFocus(new FocusNode()); // to prevent opening the onscreen keyboard
-                          DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(DateTime.now().year + 5),
-                          );
-                          if (pickedDate != null) {
-                            String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate); // format the date as you want
-                            _expiryDateController.text = formattedDate;
-                          }
+                        onChanged: (value) {
+                          _medicineData['quantity'] = value;
                         },
                       ),
-
-                      SizedBox(height: 20),
-                      CustomTextField(
-                        controller: _priceController,
+                      DateInput(
+                        onChanged: (value) {
+                          _medicineData['expiry_date'] = value;
+                        },
+                      ),
+                      OptionalTextField(
+                        controller: TextEditingController(),
                         hintText: 'Price',
-                        prefixIcon: Icons.attach_money,
-                      ),
-                      SizedBox(height: 20),
-                      BorderButton(
-                        text: 'Create',
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            try {
-                              // Handle form submission
-                              String scientificName = _scientificNameController.text;
-                              String commercialName = _commercialNameController.text;
-                              String category = _categoryController.text;
-                              String manufacturer = _manufacturerController.text;
-                              int quantity = int.parse(_quantityController.text);
-
-                              // Use a date picker for the expiry date
-                              DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime.now(),
-                                lastDate: DateTime(DateTime.now().year + 5),
-                              );
-
-                              // Check if a date was selected
-                              if (pickedDate != null) {
-                                String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate); // format the date as you want
-                                _expiryDateController.text = formattedDate;
-                              } else {
-                                print('No date selected');
-                                return;
-                              }
-
-                              double price = double.parse(_priceController.text);
-
-                              Map<String, dynamic> medicine = {
-                                'scientific_name': scientificName,
-                                'commercial_name': commercialName,
-                                'category': category,
-                                'manufacturer': manufacturer,
-                                'quantity': quantity,
-                                'expiry_date': _expiryDateController.text,
-                                'price': price,
-                              };
-
-                              Server server = Server();
-                              await server.addMedicine(medicine);
-
-                            } catch (e) {
-                              print('Failed to create medicine: $e');
-                            }
-                          }
+                        onChanged: (value) {
+                          _medicineData['price'] = value;
                         },
                       ),
-
+                      ImageInput( // Add this line
+                        onImagePicked: (value) {
+                          _medicineData['image'] = value;
+                        },
+                      ),
+                      BorderButton(
+                        onPressed: _submitForm,
+                        text: "Submit",
+                      ),
                     ],
                   ),
                 ),

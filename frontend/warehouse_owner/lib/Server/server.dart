@@ -43,7 +43,7 @@ class Server {
 
     try {
       var response = await _dio.post(
-        'http://localhost:8000/api/medicines', // replace with your API URL
+        'http://localhost:8000/api/admin/medicines', // replace with your API URL
         data: medicine,
         options: options,
       );
@@ -57,35 +57,35 @@ class Server {
       print('Request failed with error: $e');
     }
   }
-  Future<List<Medicine>> getMedicines() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('token');
-
-    var options = Options(
-      // headers: {
-      //   'Authorization': 'Bearer $token',
-      //   'Accept': 'application/json',
-      // },
-    );
-
-    try {
-      var response = await _dio.get(
-        'http://localhost:8000/api/medicines', // replace with your API URL
-        options: options,
-      );
-
-      if (response.statusCode == 200) {
-        List<dynamic> body = response.data;
-        return body.map((dynamic item) => Medicine.fromJson(item)).toList();
-      } else {
-        print('Failed to fetch medicines');
-        return [];
-      }
-    } catch (e) {
-      print('Request failed with error: $e');
-      return [];
-    }
-  }
+  // Future<List<Medicine>> getMedicines() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? token = prefs.getString('token');
+  //
+  //   var options = Options(
+  //     // headers: {
+  //     //   'Authorization': 'Bearer $token',
+  //     //   'Accept': 'application/json',
+  //     // },
+  //   );
+  //
+  //   try {
+  //     var response = await _dio.get(
+  //       'http://localhost:8000/api/medicines', // replace with your API URL
+  //       options: options,
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       List<dynamic> body = response.data;
+  //       return body.map((dynamic item) => Medicine.fromJson(item)).toList();
+  //     } else {
+  //       print('Failed to fetch medicines');
+  //       return [];
+  //     }
+  //   } catch (e) {
+  //     print('Request failed with error: $e');
+  //     return [];
+  //   }
+  // }
   Future<void> addCategory(Map<String, dynamic> category) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');

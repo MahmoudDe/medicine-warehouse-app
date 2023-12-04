@@ -78,26 +78,40 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Consumer<MedicineProvider>(
                     builder: (context, medicineProvider, child) {
-                      return Flexible(
-                        child: GridView.builder(
-                          itemCount: medicineProvider.medicines.length,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4, // Change this number based on your design
-                          ),
-                          itemBuilder: (BuildContext context, int index) {
-                            return MedicineCard(
-                              medicine: Medicine(
-                                scientificName: 'Scientific Name 1',
-                                commercialName: 'Medicine 1',
-                                category: 'Category 1',
-                                manufacturer: 'Manufacturer 1',
-                                quantity: 5,
-                                expiryDate: DateTime.parse('2023-12-31'),
-                                price: 10.99,
+                      return FutureBuilder<List<Medicine>>(
+                        future: medicineProvider.getMedicines(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return CircularProgressIndicator(color: Colors.orangeAccent,);
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            List<Medicine> medicines = snapshot.data!;
+                            return Flexible(
+                              child: FutureBuilder<List<Medicine>>(
+                                future: medicineProvider.getMedicines(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return CircularProgressIndicator();
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else {
+                                    List<Medicine> medicines = snapshot.data!;
+                                    return GridView.builder(
+                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 4, // Change this number based on your design
+                                      ),
+                                      itemCount: medicines.length,
+                                      itemBuilder: (context, index) {
+                                        return MedicineCard(medicine: medicines[index]);
+                                      },
+                                    );
+                                  }
+                                },
                               ),
                             );
-                          },
-                        ),
+                          }
+                        },
                       );
                     },
                   ),

@@ -1,29 +1,18 @@
-// class Medicine {
-//   final String imageUrl;
-//   final String name;
-//   final String category;
-//   final double price;
-//   int quantity;
-//
-//   Medicine({
-//     required this.imageUrl,
-//     required this.name,
-//     required this.category,
-//     required this.price,
-//     required this.quantity, // Make quantity required
-//   });
-// }
-
 class Medicine {
-  final String scientificName;
-  final String commercialName;
-  final String category;
-  final String manufacturer;
+  int id;
+  int categoriesId;
+  String scientificName;
+  String commercialName;
+  String category;
+  String manufacturer;
   int quantity;
-  final DateTime expiryDate;
-  final double price;
+  DateTime expiryDate;
+  double price;
+  String? image; // Add this line
 
   Medicine({
+    required this.id,
+    required this.categoriesId,
     required this.scientificName,
     required this.commercialName,
     required this.category,
@@ -31,17 +20,89 @@ class Medicine {
     required this.quantity,
     required this.expiryDate,
     required this.price,
+    this.image, // Add this line
   });
 
   factory Medicine.fromJson(Map<String, dynamic> json) {
     return Medicine(
+      id: json['id'],
+      categoriesId: json['categories_id'],
       scientificName: json['scientific_name'],
       commercialName: json['commercial_name'],
       category: json['category'],
       manufacturer: json['manufacturer'],
       quantity: json['quantity'],
       expiryDate: DateTime.parse(json['expiry_date']),
-      price: json['price'].toDouble(),
+      price: double.tryParse(json['price']) ?? 0.0,
+      image: json['image'], // Add this line
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'categories_id': categoriesId,
+      'scientific_name': scientificName,
+      'commercial_name': commercialName,
+      'category': category,
+      'manufacturer': manufacturer,
+      'quantity': quantity,
+      'expiry_date': expiryDate.toIso8601String(),
+      'price': price,
+      'image': image, // Add this line
+    };
+  }
 }
+
+
+// class Medicine {
+//   int id;
+//   int categoriesId;
+//   String scientificName;
+//   String commercialName;
+//   String category;
+//   String manufacturer;
+//   int quantity;
+//   DateTime expiryDate;
+//   double price;
+//
+//   Medicine({
+//     required this.id,
+//     required this.categoriesId,
+//     required this.scientificName,
+//     required this.commercialName,
+//     required this.category,
+//     required this.manufacturer,
+//     required this.quantity,
+//     required this.expiryDate,
+//     required this.price,
+//   });
+//
+//   factory Medicine.fromJson(Map<String, dynamic> json) {
+//     return Medicine(
+//       id: json['id'],
+//       categoriesId: json['categories_id'],
+//       scientificName: json['scientific_name'],
+//       commercialName: json['commercial_name'],
+//       category: json['category'],
+//       manufacturer: json['manufacturer'],
+//       quantity: json['quantity'],
+//       expiryDate: DateTime.parse(json['expiry_date']),
+//       price: json['price'],
+//     );
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'id': id,
+//       'categories_id': categoriesId,
+//       'scientific_name': scientificName,
+//       'commercial_name': commercialName,
+//       'category': category,
+//       'manufacturer': manufacturer,
+//       'quantity': quantity,
+//       'expiry_date': expiryDate.toIso8601String(),
+//       'price': price,
+//     };
+//   }
+// }

@@ -28,10 +28,18 @@ Route::post('/users/register', [AuthController::class, 'register']);
 // to login 
 Route::post('/users/login', [AuthController::class, 'login']);
 
-
-Route::group((['middleware' => ['auth:sanctum']]), function () {
     // Return All Medicines from Database 
-    Route::get('/medicines', [MedicineController::class, 'index']);
+
+Route::get('/medicines', [MedicineController::class, 'index']);
+
+    // Return All categories from Database 
+
+    Route::get('/categories', [CategoryController::class, 'index']);
+
+
+    
+Route::group((['middleware' => ['auth:sanctum']]), function () {
+
 
     // Show By one (Medicine Card) 
     Route::get('/medicines/{medicines}', [MedicineController::class, 'show']);
@@ -48,8 +56,7 @@ Route::group((['middleware' => ['auth:sanctum']]), function () {
 // group what can admin  do 
 Route::group((['prefix'=>'admin','middleware' => ['auth:sanctum']]), function () {
 
-    // Return All Medicines from Database 
-    Route::get('/medicines', [MedicineController::class, 'index']);
+ 
 
     // Show By one (Medicine Card) 
     Route::get('/medicines/{medicines}', [MedicineController::class, 'show']);
@@ -67,8 +74,7 @@ Route::group((['prefix'=>'admin','middleware' => ['auth:sanctum']]), function ()
     // Show By Categories (Filtering)
     Route::get('/medicines/search/{category}', [MedicineController::class, 'search']);
     
-    // Return All categories from Database 
-    Route::get('/categories', [CategoryController::class, 'index']);
+
 
     // To Create New Medicine :: Used By Admin  
     Route::post('/categories', [CategoryController::class, 'store']);

@@ -1,6 +1,8 @@
 
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Server/server.dart';
 import '../classes/Medicine.dart';
@@ -15,7 +17,7 @@ class MedicineProvider extends ChangeNotifier {
   List<Medicine> get medicines => _filteredMedicines;
 
   Future<void> setMedicines() async {
-    _medicines = await _server.getMedicines();
+    // _medicines = await _server.getMedicines();
     _filteredMedicines = _medicines;
     notifyListeners();
   }
@@ -59,11 +61,59 @@ void resetFilter() {
   //   _medicines.add(medicine);
   //   notifyListeners();
   // }
+  Dio _dio = new Dio();
   Future<void> addMedicine(Medicine medicine) async {
     await _server.addMedicine(medicine as Map<String, dynamic>);
     _medicines.add(medicine);
     _filteredMedicines = _medicines;
     notifyListeners();
+  }
+
+  Future<List<Medicine>> getMedicines() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+
+    var options = Options(
+      // headers: {
+      //   'Authorization': 'Bearer $token',
+      //   'Accept': 'application/json',
+      // },
+    );
+
+    try {
+      var response = await _dio.get(
+        'http://localhost:8000/api/medicines', // replace with your API URL
+        options: options,
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> body = response.data;
+        return body.map((dynamic item) => Medicine.fromJson(item)).toList();
+      } else {
+        print('Failed to fetch medicines');
+        return [];
+      }
+    } catch (e) {
+      print('Request failed with error: $e');
+      return [];
+    }
+  }
+
+  // fetch categories
+
+  Future<List<String>> getCategories() async {
+    try {
+      var response = await _dio.get('http://localhost:8000/api/categories');
+      if (response.statusCode == 200) {
+        return List<String>.from(response.data.map((item) => item['name'].toString()));
+      } else {
+        print('Failed to fetch categories');
+        return [];
+      }
+    } catch (e) {
+      print('Request failed with error: $e');
+      return [];
+    }
   }
 
 
