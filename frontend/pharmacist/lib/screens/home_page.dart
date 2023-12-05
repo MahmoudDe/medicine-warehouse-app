@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:medicine_warehouse/screens/nav_bar.dart';
 import 'package:medicine_warehouse/screens/categories.dart';
 
+// Badr's screen
+
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
 
@@ -57,9 +59,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          Expanded(
-            child: CategoriesScreen(),
-          ),
+
+
+          
+
+          // Badr's Cards
+
+
+
+
         ],
       ),
     );

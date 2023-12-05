@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'categories.dart';
+
 
 
 class SearchScreen extends StatelessWidget {
@@ -13,8 +15,8 @@ class SearchScreen extends StatelessWidget {
         backgroundColor: Colors.cyan.shade700,
 
       ),
-      body: Center(
-        child: Text('This is the SearchPage'),
+      body:  Expanded(
+        child: CategoriesScreen(),
       ),
     );
   }

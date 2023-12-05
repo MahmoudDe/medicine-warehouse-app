@@ -56,12 +56,12 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 text: 'Home',
               ),
               GButton(
-                icon: Iconsax.search_normal_1,
-                text: 'Search',
+                icon: Iconsax.category,
+                text: 'categories',
               ),
               GButton(
-                icon: Iconsax.profile_circle,
-                text: 'Profile',
+                icon: Iconsax.shopping_cart,
+                text: 'cart',
               ),
             ],
           ),
