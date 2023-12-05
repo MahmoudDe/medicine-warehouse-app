@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medicine_warehouse/screens/MedicineDetails.dart';
+import 'package:medicine_warehouse/screens/medicine_details.dart';
 import 'package:medicine_warehouse/screens/nav_bar.dart';
 
 import '../models/Medicine.dart';
@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              MedicineDetails(medicines[index]),
+                              MedicineDetailsScreen( medicine: medicines[index],),
                         ),
                       );
                     },

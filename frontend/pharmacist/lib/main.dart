@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:medicine_warehouse/screens/home_page.dart';
-import 'package:medicine_warehouse/screens/navigation_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'Provider/navigation_controller.dart';
+import 'screens/Auth/Register.dart';
+import 'screens/Auth/login.dart';
+import 'screens/HomePage.dart';
+import 'screens/navigation_screen.dart';
 
-// Import the register and login pages
-import 'package:medicine_warehouse/screens/Auth/Register.dart';
-import 'package:medicine_warehouse/screens/Auth/login.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  String initialRoute = isLoggedIn ? '/main' : '/login';
 
-void main() {
-  runApp(MyApp(initialRoute: NavigationScreen.routeName));
+  runApp(MyApp(initialRoute: initialRoute));
 }
 
 class MyApp extends StatelessWidget {
@@ -33,13 +37,13 @@ class MyApp extends StatelessWidget {
           secondaryHeaderColor: Colors.orange,
           fontFamily: 'Avenir',
         ),
-        home: LoginPage(),
+        initialRoute: initialRoute, // Use the initialRoute determined by the login state
         routes: {
-          '/login': (context) => LoginPage(), // Add this line
-          '/register': (context) => RegisterPage(), // Add this line
+          '/login': (context) => LoginPage(),
+          '/register': (context) => RegisterPage(),
           '/home': (context) => HomeScreen(),
           '/main': (context) => const NavigationScreen(),
-          NavigationScreen.routeName: (context) => LoginPage()
+          // Remove the NavigationScreen.routeName that points to LoginPage to prevent going back to login
         },
       ),
     );
