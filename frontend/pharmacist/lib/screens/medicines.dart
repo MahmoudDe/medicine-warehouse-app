@@ -9,20 +9,20 @@ class MedicinesScreen extends StatelessWidget {
   List<Medicine> medicines;
 
   void _onSelectedMedicine(BuildContext context, Medicine medicine) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => MedicineDetailsScreen(
-          medicine: medicine,
-        ),
-      ),
-    );
+    // Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (ctx) => MedicineDetailsScreen(
+    //       medicine: medicine,
+    //     ),
+    //   ),
+    // );
   }
 
   @override
   Widget build(BuildContext context) {
     Widget content = ListView.builder(
       //itemCount: medicines.length,
-      itemBuilder: (ctx, index) => Text(medicines[index].medicineName),
+      itemBuilder: (ctx, index) => Text(medicines[index].scientificName),
     );
     content = ListView.builder(
       itemCount: medicines.length,

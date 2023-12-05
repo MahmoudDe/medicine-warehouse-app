@@ -1,14 +1,25 @@
+// ignore_for_file: file_names
+
 class Medicine {
-  const Medicine({
-    required this.imageUrl,
-    required this.medicineName,
-    required this.description,
-    required this.price,
-    required this.categories,
-  });
-  final String imageUrl;
-  final String medicineName;
-  final List<String> description;
-  final int price;
-  final List<String> categories;
+  final int quantity;
+  final double price;
+  final String scientificName,
+      tradeName,
+      classification,
+      manufacturer,
+      image,
+      expiryDate,
+      description;
+
+  Medicine(
+      this.price,
+      this.quantity,
+      this.scientificName,
+      this.tradeName,
+      this.classification,
+      this.manufacturer,
+      this.expiryDate,
+      this.description,
+      this.image,
+      {required String medicineName});
 }

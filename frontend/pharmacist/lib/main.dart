@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           secondaryHeaderColor: Colors.orange,
           fontFamily: 'Avenir',
         ),
-        initialRoute: initialRoute,
+        home: LoginPage(),
         routes: {
           '/login': (context) => LoginPage(), // Add this line
           '/register': (context) => RegisterPage(), // Add this line

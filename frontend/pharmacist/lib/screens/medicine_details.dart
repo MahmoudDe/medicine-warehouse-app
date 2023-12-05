@@ -1,5 +1,6 @@
-import 'package:medicine_warehouse/models/medicine.dart';
 import 'package:flutter/material.dart';
+
+import '../models/Medicine.dart';
 
 class MedicineDetailsScreen extends StatelessWidget {
   MedicineDetailsScreen({required this.medicine, super.key});
@@ -10,7 +11,7 @@ class MedicineDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          medicine.medicineName,
+          medicine.scientificName,
         ),
         actions: [
           IconButton(
@@ -25,7 +26,7 @@ class MedicineDetailsScreen extends StatelessWidget {
         child: Column(
           children: [
             Image.network(
-              medicine.imageUrl,
+              medicine.image,
               height: 300,
               width: double.infinity,
               fit: BoxFit.cover,
@@ -42,19 +43,18 @@ class MedicineDetailsScreen extends StatelessWidget {
             const SizedBox(
               height: 14,
             ),
-            for (final description in medicine.description)
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 8,
-                ),
-                child: Text(
-                  description,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
-                      ),
-                ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 30,
+                vertical: 8,
               ),
+              child: Text(
+                medicine.description,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+              ),
+            ),
             const SizedBox(
               height: 12,
             ),

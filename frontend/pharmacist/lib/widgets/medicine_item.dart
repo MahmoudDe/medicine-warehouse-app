@@ -1,6 +1,6 @@
-import 'package:medicine_warehouse/models/medicine.dart';
 import 'package:flutter/material.dart';
-import 'package:medicine_warehouse/models/medicine.dart';
+
+import '../models/medicine.dart';
 
 class MedicineItem extends StatelessWidget {
   const MedicineItem(
@@ -13,7 +13,7 @@ class MedicineItem extends StatelessWidget {
     return InkWell(
       onTap: onSelectedMedicine,
       child: Card(
-        child: Image.network(medicine.imageUrl),
+        child: Image.network(medicine.image),
       ),
     );
   }

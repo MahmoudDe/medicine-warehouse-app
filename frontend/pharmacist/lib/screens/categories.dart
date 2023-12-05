@@ -14,14 +14,14 @@ class CategoriesScreen extends StatelessWidget {
         .toList();
     //medicine that have the same id of that category => put them as list in filteredMedicines, so that we will have => List<Medicine>filteredMedicines
 
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => MedicinesScreen(
-          medicines: filterMedicines,
-          title: category.title,
-        ),
-      ),
-    );
+    // Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (ctx) => MedicinesScreen(
+    //       medicines: filterMedicines,
+    //       title: category.title,
+    //     ),
+    //   ),
+    // );
   }
 
   @override

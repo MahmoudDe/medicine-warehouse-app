@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medicine_warehouse/screens/MedicineDetails.dart';
+import 'package:medicine_warehouse/screens/nav_bar.dart';
+
 import '../models/Medicine.dart';
-import 'MedicineDetails.dart';
-import 'nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -12,7 +13,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Medicine> medicines = [];
+  List<Medicine> medicines = [
+    Medicine(1000, 30, 'Omega', 'Omg', 'baby', '12/12/2024', 'IbnZaher', '....',
+        'assets/images/Medicine 1.jpg',
+        medicineName: 'Omega'),
+    Medicine(1000, 30, 'Omega', 'Omg', 'baby', '12/12/2024', 'IbnZaher', '....',
+        'assets/images/Medicine 1.jpg',
+        medicineName: 'Omega'),
+    Medicine(1000, 30, 'Omega', 'Omg', 'baby', '12/12/2024', 'IbnZaher', '....',
+        'assets/images/Medicine 1.jpg',
+        medicineName: 'Omega'),
+    Medicine(1000, 30, 'Omega', 'Omg', 'baby', '12/12/2024', 'IbnZaher', '....',
+        'assets/images/Medicine 1.jpg',
+        medicineName: 'Omega'),
+    Medicine(1000, 30, 'Omega', 'Omg', 'baby', '12/12/2024', 'IbnZaher', '....',
+        'assets/images/Medicine 1.jpg',
+        medicineName: 'Omega'),
+  ];
   final TextEditingController _controller = TextEditingController();
 
   @override
