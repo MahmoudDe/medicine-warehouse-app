@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:medicine_warehouse/screens/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'Provider/navigation_controller.dart';
 import 'screens/Auth/Register.dart';
 import 'screens/Auth/login.dart';
-import 'screens/HomePage.dart';
+import 'screens/home_page.dart';
 import 'screens/navigation_screen.dart';
 
 void main() async {
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
           secondaryHeaderColor: Colors.orange,
           fontFamily: 'Avenir',
         ),
-        initialRoute: initialRoute, // Use the initialRoute determined by the login state
+        initialRoute:
+            initialRoute, // Use the initialRoute determined by the login state
         routes: {
           '/login': (context) => LoginPage(),
           '/register': (context) => RegisterPage(),

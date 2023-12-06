@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import '../models/Medicine.dart';
+import '../models/medicine.dart';
 
 class MedicineDetailsScreen extends StatelessWidget {
+  MedicineDetailsScreen(
+      {required this.medicine, super.key}); /*required this.onToggleFavorite*/
+
   final Medicine medicine;
-  MedicineDetailsScreen({required this.medicine, super.key});
+  // final void Function(Medicine medicine) onToggleFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +16,7 @@ class MedicineDetailsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              // TODO: Implement favorite functionality
+              // onToggleFavorite(medicine);
             },
             icon: const Icon(Icons.star_border),
             tooltip: 'Add to favorites',
@@ -42,17 +45,23 @@ class MedicineDetailsScreen extends StatelessWidget {
                     'Description',
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(
+                    height: 8,
+                  ),
                   Text(
                     medicine.description,
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(
+                    height: 24,
+                  ),
                   Text(
                     'Price: ${medicine.price}',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(
+                    height: 32,
+                  ),
                   Center(
                     child: ElevatedButton.icon(
                       onPressed: () {
@@ -61,8 +70,9 @@ class MedicineDetailsScreen extends StatelessWidget {
                       icon: const Icon(Icons.shopping_cart),
                       label: const Text('Buy Now'),
                       style: ElevatedButton.styleFrom(
-                        primary: Theme.of(context).colorScheme.secondary,
-                        onPrimary: Colors.white,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.secondary,
+                        foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 48,
                           vertical: 12,

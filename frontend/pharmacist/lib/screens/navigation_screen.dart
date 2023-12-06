@@ -46,9 +46,11 @@ class _NavigationScreenState extends State<NavigationScreen> {
             gap: 8,
             padding: EdgeInsets.all(mediaQuery.height / 60),
             onTabChange: (value) {
-              setState(() {
-                Constants.index = value;
-              });
+              setState(
+                () {
+                  Constants.index = value;
+                },
+              );
             },
             tabs: const [
               GButton(
@@ -56,12 +58,12 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 text: 'Home',
               ),
               GButton(
-                icon: Iconsax.category,
-                text: 'categories',
-              ),
-              GButton(
                 icon: Iconsax.shopping_cart,
                 text: 'cart',
+              ),
+              GButton(
+                icon: Iconsax.heart,
+                text: 'Favorite',
               ),
             ],
           ),

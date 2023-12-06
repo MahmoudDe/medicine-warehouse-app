@@ -4,35 +4,36 @@ import 'package:medicine_warehouse/widgets/medicine_item.dart';
 import 'package:medicine_warehouse/screens/medicine_details.dart';
 
 class MedicinesScreen extends StatelessWidget {
-  MedicinesScreen({this.title, required this.medicines, super.key});
+  MedicinesScreen({required this.title, required this.medicines, super.key});
   final String? title;
-  List<Medicine> medicines;
+  final List<Medicine> medicines;
 
   void _onSelectedMedicine(BuildContext context, Medicine medicine) {
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (ctx) => MedicineDetailsScreen(
-    //       medicine: medicine,
-    //     ),
-    //   ),
-    // );
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => MedicineDetailsScreen(
+          medicine: medicine,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     Widget content = ListView.builder(
-      //itemCount: medicines.length,
+      itemCount: medicines.length,
       itemBuilder: (ctx, index) => Text(medicines[index].scientificName),
     );
-    content = ListView.builder(
-      itemCount: medicines.length,
-      itemBuilder: (ctx, index) => MedicineItem(
-        medicine: medicines[index],
-        onSelectedMedicine: () {
-          _onSelectedMedicine(context, medicines[index]);
-        },
-      ),
-    );
+    // content = ListView.builder(
+    //   itemCount: medicines.length,
+    //   itemBuilder: (ctx, index) => MedicineItem(
+    //     medicine: medicines[index],
+    //     onSelectedMedicine: (medicine) {
+    //       _onSelectedMedicine(context, medicine);
+    //     },
+    //   ),
+    // );
+    content = MedicineItem(medicines: medicines);
 
     return Scaffold(
       appBar: AppBar(

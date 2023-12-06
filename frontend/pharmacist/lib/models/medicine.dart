@@ -10,8 +10,7 @@ class Medicine {
       image,
       expiryDate,
       description;
-
-  Medicine(
+  const Medicine(
       this.price,
       this.quantity,
       this.scientificName,

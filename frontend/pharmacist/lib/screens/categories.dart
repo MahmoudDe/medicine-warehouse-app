@@ -10,18 +10,18 @@ class CategoriesScreen extends StatelessWidget {
 
   void _selectedCategory(Category category, BuildContext context) {
     final filterMedicines = availableMedicines
-        .where((medicine) => medicine.categories.contains(category.id))
+        .where((medicine) => medicine.classification.contains(category.title))
         .toList();
     //medicine that have the same id of that category => put them as list in filteredMedicines, so that we will have => List<Medicine>filteredMedicines
 
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (ctx) => MedicinesScreen(
-    //       medicines: filterMedicines,
-    //       title: category.title,
-    //     ),
-    //   ),
-    // );
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => MedicinesScreen(
+          medicines: filterMedicines,
+          title: category.title,
+        ),
+      ),
+    );
   }
 
   @override
