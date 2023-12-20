@@ -39,7 +39,7 @@ const availableCategories = [
     imageUrl: 'assets/images/9.png',
   ),
 ];
-const availableMedicines = [
+ List<Medicine> availableMedicines = [
   Medicine(
     1000,
     30,
@@ -52,8 +52,8 @@ const availableMedicines = [
     'assets/images/Medicine 1.jpg',
     medicineName: 'Omega',
   ),
-  Medicine(
-    1000,
+   Medicine(
+    5000,
     30,
     'hair',
     'Omg',
@@ -64,8 +64,8 @@ const availableMedicines = [
     'assets/images/Medicine 1.jpg',
     medicineName: 'Omega',
   ),
-  Medicine(
-    1000,
+   Medicine(
+    10000,
     30,
     'Omega',
     'Omg',
@@ -76,8 +76,8 @@ const availableMedicines = [
     'assets/images/Medicine 1.jpg',
     medicineName: 'Omega',
   ),
-  Medicine(
-    1000,
+   Medicine(
+    20000,
     30,
     'Omega',
     'Omg',
@@ -88,8 +88,8 @@ const availableMedicines = [
     'assets/images/Medicine 1.jpg',
     medicineName: 'Omega',
   ),
-  Medicine(
-    1000,
+   Medicine(
+    25000,
     30,
     'Omega',
     'Omg',
@@ -100,8 +100,8 @@ const availableMedicines = [
     'assets/images/Medicine 1.jpg',
     medicineName: 'Omega',
   ),
-  Medicine(
-    1000,
+   Medicine(
+    30000,
     30,
     'Omega',
     'Omg',
@@ -112,8 +112,8 @@ const availableMedicines = [
     'assets/images/Medicine 1.jpg',
     medicineName: 'Omega',
   ),
-  Medicine(
-    1000,
+   Medicine(
+    15000,
     30,
     'Omega',
     'Omg',

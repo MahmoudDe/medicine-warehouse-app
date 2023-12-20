@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 class Medicine {
-  final int quantity;
+   int quantity;
   final double price;
   final String scientificName,
       tradeName,
@@ -10,7 +10,7 @@ class Medicine {
       image,
       expiryDate,
       description;
-  const Medicine(
+   Medicine(
       this.price,
       this.quantity,
       this.scientificName,

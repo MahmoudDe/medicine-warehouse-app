@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../data/dummy_data.dart';
+import 'cart_page.dart';
+
 class NavBar extends StatelessWidget {
   @override
   Widget build(context) {
@@ -34,7 +37,9 @@ class NavBar extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.shopping_basket),
             title: const Text('Orders'),
-            onTap: () {},
+            onTap: () {
+              CartPage(cartItem:[]);
+            },
           ),
           ListTile(
             leading: const Icon(Icons.change_circle),
