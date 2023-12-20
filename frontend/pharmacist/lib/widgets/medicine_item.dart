@@ -4,8 +4,12 @@ import 'package:medicine_warehouse/screens/medicines.dart';
 import '../models/medicine.dart';
 
 class MedicineItem extends StatelessWidget {
-  MedicineItem({required this.medicines});
+  MedicineItem({
+    required this.medicines,
+    required this.onToggleFavorite,
+  });
   final List<Medicine> medicines;
+  final void Function(Medicine medicine) onToggleFavorite;
   // const MedicineItem(
   //     {required this.medicine, required this.onSelectedMedicine, super.key});
   // final Medicine medicine;
@@ -32,6 +36,7 @@ class MedicineItem extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => MedicineDetailsScreen(
                         medicine: medicines[index],
+                        onToggleFavorite: onToggleFavorite,
                       ),
                     ),
                   );

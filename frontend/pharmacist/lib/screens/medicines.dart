@@ -4,19 +4,25 @@ import 'package:medicine_warehouse/widgets/medicine_item.dart';
 import 'package:medicine_warehouse/screens/medicine_details.dart';
 
 class MedicinesScreen extends StatelessWidget {
-  MedicinesScreen({required this.title, required this.medicines, super.key});
+  MedicinesScreen({
+    required this.title,
+    required this.medicines,
+    required this.onToggleFavorite,
+    super.key,
+  });
   final String? title;
   final List<Medicine> medicines;
-
-  void _onSelectedMedicine(BuildContext context, Medicine medicine) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => MedicineDetailsScreen(
-          medicine: medicine,
-        ),
-      ),
-    );
-  }
+  final void Function(Medicine medicine) onToggleFavorite;
+  // void _onSelectedMedicine(BuildContext context, Medicine medicine) {
+  //   Navigator.of(context).push(
+  //     MaterialPageRoute(
+  //       builder: (ctx) => MedicineDetailsScreen(
+  //         medicine: medicine,
+  //         onToggleFavorite: onToggleFavorite,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +30,11 @@ class MedicinesScreen extends StatelessWidget {
       itemCount: medicines.length,
       itemBuilder: (ctx, index) => Text(medicines[index].scientificName),
     );
-    // content = ListView.builder(
-    //   itemCount: medicines.length,
-    //   itemBuilder: (ctx, index) => MedicineItem(
-    //     medicine: medicines[index],
-    //     onSelectedMedicine: (medicine) {
-    //       _onSelectedMedicine(context, medicine);
-    //     },
-    //   ),
-    // );
-    content = MedicineItem(medicines: medicines);
+
+    content = MedicineItem(
+      medicines: medicines,
+      onToggleFavorite: onToggleFavorite,
+    );
 
     return Scaffold(
       appBar: AppBar(
