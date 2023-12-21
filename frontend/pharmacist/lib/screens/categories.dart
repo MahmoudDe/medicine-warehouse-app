@@ -1,4 +1,5 @@
 import 'package:medicine_warehouse/models/category.dart';
+import 'package:medicine_warehouse/models/medicine.dart';
 import 'package:medicine_warehouse/screens/medicines.dart';
 import 'package:flutter/material.dart';
 import 'package:medicine_warehouse/data/dummy_data.dart';
@@ -6,7 +7,13 @@ import 'package:medicine_warehouse/widgets/category_grid_item.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({super.key});
+  const CategoriesScreen({required this.onToggleFavorite, super.key});
+
+  final void Function(Medicine medicine) onToggleFavorite;
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => super.hashCode;
 
   void _selectedCategory(Category category, BuildContext context) {
     final filterMedicines = availableMedicines
@@ -19,6 +26,7 @@ class CategoriesScreen extends StatelessWidget {
         builder: (ctx) => MedicinesScreen(
           medicines: filterMedicines,
           title: category.title,
+          onToggleFavorite: onToggleFavorite,
         ),
       ),
     );

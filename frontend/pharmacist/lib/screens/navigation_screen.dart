@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:iconsax/iconsax.dart';
-
 import '../models/constants.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -16,6 +15,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
+
     return Scaffold(
       // appBar: Constants.index == 0 ? appBar(): null,
       bottomNavigationBar: Container(

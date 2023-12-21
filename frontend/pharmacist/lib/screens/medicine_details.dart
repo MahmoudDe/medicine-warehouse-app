@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import '../models/medicine.dart';
+import 'package:provider/provider.dart';
 
 class MedicineDetailsScreen extends StatelessWidget {
-  MedicineDetailsScreen(
-      {required this.medicine, super.key}); /*required this.onToggleFavorite*/
+  MedicineDetailsScreen({
+    required this.medicine,
+    required this.onToggleFavorite,
+    super.key,
+  });
 
   final Medicine medicine;
-  // final void Function(Medicine medicine) onToggleFavorite;
+  final void Function(Medicine medicine) onToggleFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +20,7 @@ class MedicineDetailsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              // onToggleFavorite(medicine);
+              onToggleFavorite(medicine);
             },
             icon: const Icon(Icons.star_border),
             tooltip: 'Add to favorites',
@@ -43,14 +47,14 @@ class MedicineDetailsScreen extends StatelessWidget {
                 children: [
                   Text(
                     'Description',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(
                     height: 8,
                   ),
                   Text(
                     medicine.description,
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(
                     height: 24,
