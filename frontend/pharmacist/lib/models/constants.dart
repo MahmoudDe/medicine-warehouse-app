@@ -2,6 +2,7 @@ import 'package:medicine_warehouse/screens/Profile.dart';
 import 'package:medicine_warehouse/screens/cart_page.dart';
 import '../data/dummy_data.dart';
 import '../screens/home_page.dart';
+
 import '../screens/search_page.dart';
 
 class Constants {

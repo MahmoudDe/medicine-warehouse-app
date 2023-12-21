@@ -16,6 +16,7 @@ dependencies:
   image_picker: ^1.0.4
   intl: ^0.18.1
   shared_preferences:
+  flutter_secure_storage:
 
   flutter_barcode_scanner: ^2.0.0
   dio: ^5.3.3

@@ -4,10 +4,14 @@ import 'package:iconsax/iconsax.dart';
 import 'package:medicine_warehouse/widgets/border_button.dart';
 
 import '../../Paint.dart';
+import '../../server/server.dart';
 import '../../widgets/Button.dart';
 import '../../widgets/text_field.dart';
+import '../navigation_screen.dart';
 
 class LoginPage extends StatelessWidget {
+  Server server = new Server();
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -70,18 +74,44 @@ class LoginPage extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: BorderButton(text: "Register", onPressed: () {}),
+                      child: BorderButton(text: "Register", onPressed: () {
+                        Navigator.pushNamed(context, '/register');
+
+                      }),
                     ),
                   ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CustomElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/main');
+                        onPressed: () async {
+                          try {
+                            var loginResponse = await server.loginUser(emailController.text, passwordController.text);
+                            // Show success Snackbar upon successful login
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Login successful'),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                            // After a successful login, navigate to the home screen and remove all previous routes.
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => NavigationScreen()),
+                                  (Route<dynamic> route) => false,
+                            );
+
+                          } catch (e) {
+                            // Show error Snackbar if login fails
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Login failed: $e'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
                         },
                         text: 'Login',
-                      ),
+                      )
                     ),
                   ),
                 ],
