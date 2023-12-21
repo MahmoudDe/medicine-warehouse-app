@@ -14,8 +14,10 @@ class _FavoriteScreen extends State<FavoriteScreen> {
 
   void _toggleMedicineFavoriteStatus(Medicine medicine) {
     setState(() {
-      _FavoriteMedicines.add(medicine);
-    });
+
+        _FavoriteMedicines.add(medicine);
+      }
+    );
   }
 
   @override
@@ -23,7 +25,7 @@ class _FavoriteScreen extends State<FavoriteScreen> {
     return MedicinesScreen(
       title: 'Favorites',
       medicines: _FavoriteMedicines,
-      onToggleFavorite: _toggleMedicineFavoriteStatus,
+
     );
   }
 }

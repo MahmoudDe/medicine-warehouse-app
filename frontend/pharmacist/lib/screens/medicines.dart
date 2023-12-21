@@ -7,12 +7,12 @@ class MedicinesScreen extends StatelessWidget {
   MedicinesScreen({
     required this.title,
     required this.medicines,
-    required this.onToggleFavorite,
+
     super.key,
   });
   final String? title;
   final List<Medicine> medicines;
-  final void Function(Medicine medicine) onToggleFavorite;
+
   // void _onSelectedMedicine(BuildContext context, Medicine medicine) {
   //   Navigator.of(context).push(
   //     MaterialPageRoute(
@@ -32,8 +32,8 @@ class MedicinesScreen extends StatelessWidget {
     );
 
     content = MedicineItem(
-      medicines: medicines,
-      onToggleFavorite: onToggleFavorite,
+      medicines: medicines, onToggleFavorite: (Medicine medicine) {  },
+
     );
 
     return Scaffold(

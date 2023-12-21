@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       create: (context) => NavigationController(),
       child: MaterialApp(
         // home: token == null ? LoginPage() : HomeScreen(),
-        home: HomeScreen(),
+        home: NavigationScreen(),
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.orange,

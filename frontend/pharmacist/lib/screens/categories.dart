@@ -7,9 +7,8 @@ import 'package:medicine_warehouse/widgets/category_grid_item.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({required this.onToggleFavorite, super.key});
+  const CategoriesScreen({super.key});
 
-  final void Function(Medicine medicine) onToggleFavorite;
 
   @override
   // TODO: implement hashCode
@@ -26,7 +25,6 @@ class CategoriesScreen extends StatelessWidget {
         builder: (ctx) => MedicinesScreen(
           medicines: filterMedicines,
           title: category.title,
-          onToggleFavorite: onToggleFavorite,
         ),
       ),
     );

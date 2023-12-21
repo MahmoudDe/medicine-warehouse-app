@@ -1,5 +1,3 @@
-import 'package:medicine_warehouse/screens/Profile.dart';
-
 import 'package:medicine_warehouse/screens/cart_page.dart';
 import '../data/dummy_data.dart';
 
@@ -16,8 +14,6 @@ class Constants {
   static List secreens = [
     HomeScreen(),
     CartPage(cartItem:[]),
-    ProfileScreen(),
-    SearchScreen(),
     FavoriteScreen(),
   ];
 }

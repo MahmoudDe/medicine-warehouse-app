@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/medicine.dart';
 import 'package:provider/provider.dart';
 
-class MedicineDetailsScreen extends StatelessWidget {
+class MedicineDetailsScreen extends StatefulWidget {
   MedicineDetailsScreen({
     required this.medicine,
     required this.onToggleFavorite,
@@ -13,28 +13,39 @@ class MedicineDetailsScreen extends StatelessWidget {
   final void Function(Medicine medicine) onToggleFavorite;
 
   @override
+  State<MedicineDetailsScreen> createState() => _MedicineDetailsScreenState();
+}
+
+class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
+  bool isFavorite = false;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(medicine.scientificName),
+        title: Text(widget.medicine.scientificName),
         actions: [
           IconButton(
             onPressed: () {
-              onToggleFavorite(medicine);
+              setState(() {
+                isFavorite = !isFavorite;
+              });
             },
-            icon: const Icon(Icons.star_border),
+            icon: Icon(
+              isFavorite ? Icons.star : Icons.star_border,
+            ),
             tooltip: 'Add to favorites',
           ),
-        ],
+        ], // This bracket was misplaced
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Hero(
-              tag: 'medicine-img-${medicine}',
+              tag: 'medicine-img-${widget.medicine}',
               child: Image.network(
-                medicine.image,
+                widget.medicine.image,
                 height: 300,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -53,14 +64,14 @@ class MedicineDetailsScreen extends StatelessWidget {
                     height: 8,
                   ),
                   Text(
-                    medicine.description,
+                    widget.medicine.description,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(
                     height: 24,
                   ),
                   Text(
-                    'Price: ${medicine.price}',
+                    'Price: ${widget.medicine.price}',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(
@@ -68,14 +79,14 @@ class MedicineDetailsScreen extends StatelessWidget {
                   ),
                   Center(
                     child: ElevatedButton.icon(
-                      onPressed: () {
-                        // TODO: Implement buy functionality
+                      onPressed: (){
+
                       },
                       icon: const Icon(Icons.shopping_cart),
                       label: const Text('Buy Now'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
-                            Theme.of(context).colorScheme.secondary,
+                        Theme.of(context).colorScheme.secondary,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 48,
