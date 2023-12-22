@@ -39,8 +39,9 @@ const availableCategories = [
     imageUrl: 'assets/images/9.png',
   ),
 ];
- List<Medicine> availableMedicines = [
+List<Medicine> availableMedicines = [
   Medicine(
+    false,
     1000,
     30,
     'Omega',
@@ -52,7 +53,8 @@ const availableCategories = [
     'assets/images/Medicine 1.jpg',
     medicineName: 'Omega',
   ),
-   Medicine(
+  Medicine(
+    false,
     5000,
     30,
     'hair',
@@ -64,7 +66,8 @@ const availableCategories = [
     'assets/images/Medicine 1.jpg',
     medicineName: 'Omega',
   ),
-   Medicine(
+  Medicine(
+    false,
     10000,
     30,
     'Omega',
@@ -76,7 +79,8 @@ const availableCategories = [
     'assets/images/Medicine 1.jpg',
     medicineName: 'Omega',
   ),
-   Medicine(
+  Medicine(
+    false,
     20000,
     30,
     'Omega',
@@ -88,7 +92,8 @@ const availableCategories = [
     'assets/images/Medicine 1.jpg',
     medicineName: 'Omega',
   ),
-   Medicine(
+  Medicine(
+    false,
     25000,
     30,
     'Omega',
@@ -100,7 +105,8 @@ const availableCategories = [
     'assets/images/Medicine 1.jpg',
     medicineName: 'Omega',
   ),
-   Medicine(
+  Medicine(
+    false,
     30000,
     30,
     'Omega',
@@ -112,7 +118,8 @@ const availableCategories = [
     'assets/images/Medicine 1.jpg',
     medicineName: 'Omega',
   ),
-   Medicine(
+  Medicine(
+    false,
     15000,
     30,
     'Omega',
@@ -125,3 +132,6 @@ const availableCategories = [
     medicineName: 'Omega',
   ),
 ];
+
+List<Medicine> favoritList = [];
+List<Medicine> cartList = [];

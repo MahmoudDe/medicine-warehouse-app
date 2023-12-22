@@ -1,8 +1,9 @@
 // ignore_for_file: file_names
 
 class Medicine {
-   int quantity;
+  int quantity;
   final double price;
+  bool isFavorite;
   final String scientificName,
       tradeName,
       classification,
@@ -10,7 +11,8 @@ class Medicine {
       image,
       expiryDate,
       description;
-   Medicine(
+  Medicine(
+      this.isFavorite,
       this.price,
       this.quantity,
       this.scientificName,

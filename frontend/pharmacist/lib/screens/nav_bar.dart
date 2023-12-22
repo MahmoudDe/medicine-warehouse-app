@@ -12,22 +12,25 @@ class NavBar extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           const UserAccountsDrawerHeader(
-            accountName: Text('Bader Awad',style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold
-            ),),
-            accountEmail: Text('bader33.awad@gmail.com',style: TextStyle(
-              color: Colors.white, fontSize: 14
-            ),),
+            accountName: Text(
+              'Bader Awad',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+            accountEmail: Text(
+              'bader33.awad@gmail.com',
+              style: TextStyle(color: Colors.white, fontSize: 14),
+            ),
             currentAccountPicture: CircleAvatar(
               backgroundImage: AssetImage("assets/images/Profile.jpg"),
               radius: 50,
             ),
             decoration: BoxDecoration(
               color: Colors.black87,
-                // image: DecorationImage(
-                //     fit: BoxFit.cover,
-                //     image: AssetImage("assets/images/R.jpg"))
-              ),
+              // image: DecorationImage(
+              //     fit: BoxFit.cover,
+              //     image: AssetImage("assets/images/R.jpg"))
+            ),
           ),
           ListTile(
             leading: const Icon(Icons.email),
@@ -38,7 +41,7 @@ class NavBar extends StatelessWidget {
             leading: const Icon(Icons.shopping_basket),
             title: const Text('Orders'),
             onTap: () {
-              CartPage(cartItem:[]);
+              CartPage();
             },
           ),
           ListTile(

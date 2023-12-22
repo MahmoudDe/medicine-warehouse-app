@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medicine_warehouse/data/dummy_data.dart';
 import '../models/medicine.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +18,12 @@ class MedicineDetailsScreen extends StatefulWidget {
 }
 
 class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
-  bool isFavorite = false;
+  late bool isFavorite;
+  @override
+  void initState() {
+    isFavorite = widget.medicine.isFavorite;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +34,21 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
           IconButton(
             onPressed: () {
               setState(() {
+                print(widget.medicine.isFavorite);
                 isFavorite = !isFavorite;
+                widget.medicine.isFavorite = isFavorite;
+                print(widget.medicine.isFavorite);
+                if (isFavorite == true) {
+                  print('hello');
+                  if (!favoritList.contains(widget.medicine)) {
+                    favoritList.add(widget.medicine);
+                    print('Add it');
+                  } else {
+                    print('Already exsist');
+                  }
+                } else {
+                  favoritList.remove(widget.medicine);
+                }
               });
             },
             icon: Icon(
@@ -79,14 +99,14 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                   ),
                   Center(
                     child: ElevatedButton.icon(
-                      onPressed: (){
-
+                      onPressed: () {
+                        cartList.add(widget.medicine);
                       },
                       icon: const Icon(Icons.shopping_cart),
                       label: const Text('Buy Now'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
-                        Theme.of(context).colorScheme.secondary,
+                            Theme.of(context).colorScheme.secondary,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 48,

@@ -13,7 +13,7 @@ class Constants {
   static int index = 0;
   static List secreens = [
     HomeScreen(),
-    CartPage(cartItem:[]),
+    CartPage(),
     FavoriteScreen(),
   ];
 }

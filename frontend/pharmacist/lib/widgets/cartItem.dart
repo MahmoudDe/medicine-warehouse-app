@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import '../models/Medicine.dart';
+import '../models/medicine.dart';
 
 class CartItemWidget extends StatelessWidget {
   final Medicine medicine;
   final VoidCallback increaseQuantity;
   final VoidCallback decreaseQuantity;
 
-  const CartItemWidget({super.key,
+  const CartItemWidget({
+    super.key,
     required this.medicine,
     required this.increaseQuantity,
     required this.decreaseQuantity,
@@ -15,15 +16,17 @@ class CartItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 2,
-                blurRadius: 5,)]),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+            )
+          ]),
       child: Row(
         children: [
           Container(
@@ -77,4 +80,6 @@ class CartItemWidget extends StatelessWidget {
           ),
         ],
       ),
-    );}}
+    );
+  }
+}
