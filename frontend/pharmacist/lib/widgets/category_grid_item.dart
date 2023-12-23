@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:medicine_warehouse/models/category.dart';
 
 class CategoryGridItem extends StatelessWidget {
-  const CategoryGridItem(
-      {required this.category, required this.onSelectedCategory, super.key});
+  const CategoryGridItem({
+    required this.category,
+    required this.onSelectedCategory,
+    super.key,
+  });
   final Category category;
   final void Function() onSelectedCategory;
 

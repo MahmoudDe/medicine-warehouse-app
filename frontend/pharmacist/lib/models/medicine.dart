@@ -4,13 +4,13 @@ class Medicine {
   int quantity;
   final double price;
   bool isFavorite;
-  final String scientificName,
-      tradeName,
-      classification,
-      manufacturer,
-      image,
-      expiryDate,
-      description;
+  final String scientificName;
+  final String tradeName;
+  final String classification;
+  final String manufacturer;
+  final String image;
+  final String expiryDate;
+  final String description;
   Medicine(
       this.isFavorite,
       this.price,

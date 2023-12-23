@@ -11,13 +11,13 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreen extends State<FavoriteScreen> {
-  final List<Medicine> _FavoriteMedicines = [];
+//  final List<Medicine> _FavoriteMedicines = [];
 
-  void _toggleMedicineFavoriteStatus(Medicine medicine) {
-    setState(() {
-      _FavoriteMedicines.add(medicine);
-    });
-  }
+//   void _toggleMedicineFavoriteStatus(Medicine medicine) {
+//     setState(() {
+//       _FavoriteMedicines.add(medicine);
+//     });
+//   }
 
   @override
   Widget build(BuildContext context) {

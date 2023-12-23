@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:medicine_warehouse/data/dummy_data.dart';
 import 'package:medicine_warehouse/widgets/category_grid_item.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medicine_warehouse/screens/home_page.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({super.key});
-
+  const CategoriesScreen({required this.foundCategories, super.key});
+  final List<Category> foundCategories;
 
   @override
   // TODO: implement hashCode
@@ -32,7 +33,7 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView(
+    return GridView.builder(
       padding: EdgeInsets.all(24),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -40,15 +41,15 @@ class CategoriesScreen extends StatelessWidget {
         crossAxisSpacing: 20,
         mainAxisSpacing: 20,
       ),
-      children: [
-        for (final category in availableCategories)
-          CategoryGridItem(
-            category: category,
-            onSelectedCategory: () {
-              _selectedCategory(category, context);
-            },
-          )
-      ],
+      itemCount: foundCategories.length,
+      itemBuilder: (context, index) {
+        return CategoryGridItem(
+          category: foundCategories[index],
+          onSelectedCategory: () {
+            _selectedCategory(foundCategories[index], context);
+          },
+        );
+      },
     );
   }
 }

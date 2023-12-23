@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medicine_warehouse/data/dummy_data.dart';
 import 'package:medicine_warehouse/screens/categories.dart';
-import '../models/Medicine.dart';
+import '../models/category.dart';
 import 'package:medicine_warehouse/screens/medicine_details.dart';
 import 'nav_bar.dart';
 
@@ -13,8 +14,32 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Medicine> medicines = [];
   final TextEditingController _controller = TextEditingController();
+  List<Category> foundCategories = [];
+  @override
+  void initState() {
+    foundCategories = [...availableCategories];
+    super.initState();
+  }
+
+  // function
+  void _searchCategories(String enteredWord) {
+    List<Category> suggestions = [];
+    if (enteredWord.isEmpty) {
+      suggestions = availableCategories;
+    } else {
+      suggestions = availableCategories
+          .where(
+            (category) => category.title.toLowerCase().contains(
+                  enteredWord.toLowerCase(),
+                ),
+          )
+          .toList();
+    }
+    setState(() {
+      foundCategories = suggestions;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       _controller.clear();
                     },
                   ),
-                  hintText: 'Search...',
+                  hintText: 'Search for a category...',
                   hintStyle: const TextStyle(fontFamily: 'Avenir'),
                   border: InputBorder.none,
                   enabledBorder: OutlineInputBorder(
@@ -60,11 +85,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderSide: const BorderSide(color: Colors.orange),
                   ),
                 ),
+                onChanged: (value) => _searchCategories(value),
               ),
             ),
           ),
-          const Expanded(
-            child: CategoriesScreen(),
+          Expanded(
+            child: CategoriesScreen(foundCategories: foundCategories),
           )
         ],
       ),

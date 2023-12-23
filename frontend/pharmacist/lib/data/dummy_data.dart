@@ -1,7 +1,7 @@
 import 'package:medicine_warehouse/models/category.dart';
 import 'package:medicine_warehouse/models/medicine.dart';
 
-const availableCategories = [
+List<Category> availableCategories = const [
   Category(
     title: 'Medicines',
     imageUrl: 'assets/images/1.png',
@@ -49,8 +49,8 @@ List<Medicine> availableMedicines = [
     'Medicines',
     '12/12/2024',
     'IbnZaher',
-    '....',
-    'assets/images/Medicine 1.jpg',
+    'hello  helol',
+    'assets/images/Medicine 2.jpg',
     medicineName: 'Omega',
   ),
   Medicine(
@@ -62,7 +62,7 @@ List<Medicine> availableMedicines = [
     'Skin Care',
     'IbnZaher',
     '12/12/2024',
-    '....',
+    'hello  helol',
     'assets/images/Medicine 1.jpg',
     medicineName: 'Omega',
   ),
@@ -75,7 +75,7 @@ List<Medicine> availableMedicines = [
     'Hair Care',
     '12/12/2024',
     'IbnZaher',
-    '....',
+    'hello  helol',
     'assets/images/Medicine 1.jpg',
     medicineName: 'Omega',
   ),
@@ -88,7 +88,7 @@ List<Medicine> availableMedicines = [
     'Daily Care',
     '12/12/2024',
     'IbnZaher',
-    '....',
+    'hello  helol',
     'assets/images/Medicine 1.jpg',
     medicineName: 'Omega',
   ),

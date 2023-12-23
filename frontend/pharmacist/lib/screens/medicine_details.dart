@@ -19,6 +19,7 @@ class MedicineDetailsScreen extends StatefulWidget {
 
 class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
   late bool isFavorite;
+
   @override
   void initState() {
     isFavorite = widget.medicine.isFavorite;
@@ -64,35 +65,46 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
           children: [
             Hero(
               tag: 'medicine-img-${widget.medicine}',
-              child: Image.network(
+              child: Image.asset(
                 widget.medicine.image,
                 height: 300,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
             ),
+            const SizedBox(
+              height: 14,
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Description',
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: Theme.of(context).colorScheme.onBackground,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   const SizedBox(
                     height: 8,
                   ),
                   Text(
                     widget.medicine.description,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
                   ),
                   const SizedBox(
                     height: 24,
                   ),
                   Text(
                     'Price: ${widget.medicine.price}',
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: Theme.of(context).colorScheme.onBackground,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   const SizedBox(
                     height: 32,
@@ -101,12 +113,17 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                     child: ElevatedButton.icon(
                       onPressed: () {
                         cartList.add(widget.medicine);
+                        ScaffoldMessenger.of(context).clearSnackBars();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('added to cart.'),
+                          ),
+                        );
                       },
                       icon: const Icon(Icons.shopping_cart),
                       label: const Text('Buy Now'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.secondary,
+                        backgroundColor: Colors.cyan.shade800,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 48,
