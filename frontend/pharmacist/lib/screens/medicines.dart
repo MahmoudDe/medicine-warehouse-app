@@ -25,7 +25,7 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
 
   @override
   void initState() {
-    foundMedicines = [...availableMedicines];
+    foundMedicines = [...widget.medicines];
     super.initState();
   }
 
@@ -33,11 +33,11 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
   void _searchMedicines(String enteredWord) {
     List<Medicine> suggestions = [];
     if (enteredWord.isEmpty) {
-      suggestions = availableMedicines;
+      suggestions = widget.medicines;
     } else {
-      suggestions = availableMedicines
+      suggestions = widget.medicines
           .where(
-            (category) => category.scientificName.toLowerCase().contains(
+            (medicine) => medicine.scientificName.toLowerCase().contains(
                   enteredWord.toLowerCase(),
                 ),
           )
