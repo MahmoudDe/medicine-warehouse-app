@@ -55,12 +55,38 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
       itemCount: foundMedicines.length,
       itemBuilder: (ctx, index) => Text(foundMedicines[index].scientificName),
     );
-
-    content = MedicineItem(
-      medicines: foundMedicines,
-      onToggleFavorite: (Medicine medicine) {},
-    );
-
+    if (foundMedicines.isEmpty) {
+      content = Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Uh oh...nothing here!',
+              style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Text(
+              'Try selecting a different category',
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      content = MedicineItem(
+        medicines: foundMedicines,
+        onToggleFavorite: (Medicine medicine) {},
+      );
+    }
+    if (widget.title == null) {
+      return content;
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan.shade800,
