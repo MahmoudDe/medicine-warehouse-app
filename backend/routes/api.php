@@ -56,7 +56,17 @@ Route::group((['middleware' => ['auth:sanctum']]), function () {
 
     // Logout user
     Route::post('/users/logout', [AuthController::class, 'logout']);
+    // Create New Order :: User
+    Route::post('/orders', [OrderController::class, 'store']);
 
+    // Show All Orders
+    Route::get('/orders', [OrderController::class, 'index']);
+
+    //to logout
+    Route::post('/users/logout', [AuthController::class, 'logout']);
+
+    // Delete User Acount
+    Route::delete('/users/delete', [AuthController::class, 'deleteUser']);
 });
 
 // protected for store user
@@ -80,17 +90,19 @@ Route::group((['prefix' => 'admin', 'middleware' => ['auth:sanctum']]), function
 
     // To Create New Category :: Used By Admin  
     Route::post('/categories', [CategoryController::class, 'store']);
+
+    // To Accept Order :: Admin
+    Route::post('orders/{order}/accept', [OrderController::class, 'acceptOrder']);
+
+    // To Reject Order :: Admin
+    Route::post('orders/{order}/reject', [OrderController::class, 'rejectOrder']);
 });
 
 
 
+
+
 /*Order Routes*/
-
-// Show All Orders
-Route::get('/orders', [OrderController::class, 'index']);
-
-// Create New Order :: User
-Route::post('/orders', [OrderController::class, 'store']);
 
 // Show Order by order_id
 Route::get('/orders/{order}', [OrderController::class, 'show']);
@@ -101,17 +113,9 @@ Route::put('/orders/{order}', [OrderController::class, 'update']);
 // Delete Order
 Route::delete('/orders/{order}', [OrderController::class, 'destroy']);
 
-// To Accept Order :: Admin
-Route::post('orders/{order}/accept', [OrderController::class, 'acceptOrder']);
-
-// To Reject Order :: Admin
-Route::post('orders/{order}/reject', [OrderController::class, 'rejectOrder']);
-
-
 
 
 /*OrderItem Routes*/
-
 
 // Show All OrderItems
 Route::get('/order_items', [OrderItemController::class, 'index']);
