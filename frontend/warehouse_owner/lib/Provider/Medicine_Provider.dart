@@ -1,5 +1,3 @@
-
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -82,7 +80,7 @@ void resetFilter() {
 
     try {
       var response = await _dio.get(
-        'http://localhost:8000/api/medicines', // replace with your API URL
+        'http://localhost:8000/api/medicines',
         options: options,
       );
 

@@ -26,7 +26,7 @@ class _NewMedicineFormState extends State<NewMedicineForm> {
     'quantity': '',
     'expiry_date': '',
     'price': '',
-    'image': '', // Add this line
+    'image': '',
   };
 
   void _submitForm() async {
@@ -36,9 +36,7 @@ class _NewMedicineFormState extends State<NewMedicineForm> {
       _medicineData.forEach((key, value) {
         print('$key: $value');
       });
-      // Create an instance of your Server class
       Server server = Server();
-      // Call the addMedicine method with _medicineData
       await server.addMedicine(_medicineData);
     }
   }
@@ -117,7 +115,7 @@ class _NewMedicineFormState extends State<NewMedicineForm> {
                           _medicineData['price'] = value;
                         },
                       ),
-                      ImageInput( // Add this line
+                      ImageInput(
                         onImagePicked: (value) {
                           _medicineData['image'] = value;
                         },

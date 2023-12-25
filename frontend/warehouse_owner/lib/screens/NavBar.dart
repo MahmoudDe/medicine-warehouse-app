@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../Server/server.dart';
 
 class NavBar extends StatelessWidget {
   @override
@@ -9,32 +10,32 @@ class NavBar extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           const UserAccountsDrawerHeader(
-            accountName: Text('Bader Awad',style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold
-            ),),
-            accountEmail: Text('bader33.awad@gmail.com',style: TextStyle(
-              color: Colors.white, fontSize: 14
-            ),),
+            accountName: Text(
+              'Admin',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+            accountEmail: Text(
+              'admin@example.com',
+              style: TextStyle(color: Colors.white, fontSize: 14),
+            ),
             currentAccountPicture: CircleAvatar(
               backgroundImage: AssetImage("assets/images/Profile.jpg"),
               radius: 50,
             ),
             decoration: BoxDecoration(
               color: Colors.black87,
-                // image: DecorationImage(
-                //     fit: BoxFit.cover,
-                //     image: AssetImage("assets/images/R.jpg"))
-              ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.email),
-            title: const Text('Email'),
-            onTap: () {},
+              // image: DecorationImage(
+              //     fit: BoxFit.cover,
+              //     image: AssetImage("assets/images/R.jpg"))
+            ),
           ),
           ListTile(
             leading: const Icon(Icons.shopping_basket),
             title: const Text('Orders'),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed('/orders');
+            },
           ),
           ListTile(
             leading: const Icon(Icons.change_circle),
@@ -49,7 +50,11 @@ class NavBar extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('Log Out'),
-            onTap: () {},
+            onTap: () async {
+              Server server = Server();
+              await server.logoutUser();
+              Navigator.of(context).pushReplacementNamed('/login');
+            },
           )
         ],
       ),

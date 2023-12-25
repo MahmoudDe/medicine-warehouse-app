@@ -1,118 +1,202 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:provider/provider.dart';
+import 'package:warehouse_owner_app/Server/server.dart';
 
-import '../Provider/Medicine_Provider.dart';
-import '../classes/Order.dart';
+import '../classes/Medicine.dart';
 
 class OrderPage extends StatefulWidget {
   @override
   _OrderPageState createState() => _OrderPageState();
 }
+
 class _OrderPageState extends State<OrderPage> {
   List<String> statusOptions = ['Pending', 'Accepted', 'Rejected'];
-  List<String> orderStatus = List.filled(10, 'Pending'); // Initialize all orders as 'Pending'
+  List<dynamic> orders = []; // Initialize orders as empty
+  Map<int, List<dynamic>> orderItems = {}; // Initialize order items as empty
+  Map<int, Medicine> medicines = {}; // Initialize medicines as empty
+  bool isLoading = true; // Initialize loading state as true
+
+  @override
+  void initState() {
+    super.initState();
+    fetchOrdersAndMedicines();
+  }
+
+  Future<void> fetchOrdersAndMedicines() async {
+    orders = await Server().getOrders(); // Fetch orders
+    for (var order in orders) {
+      orderItems[order['id']] = await Server()
+          .getOrderItems(order['id']); // Fetch order items for each order
+    }
+    List<Medicine> medicineList =
+        await Server().getMedicines(); // Fetch medicines
+    for (var medicine in medicineList) {
+      medicines[medicine.id] =
+          medicine; // Store medicines in a map for easy access
+    }
+    setState(() {
+      isLoading = false; // Set loading state to false after fetching data
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.orangeAccent, size: 28),
-        title: Text('Pharmacist Orders', style: TextStyle(color: Colors.white)),
+        title: const Text('Pharmacist Orders',
+            style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.cyan.shade800,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
             onPressed: () {
               // Handle notification icon press
             },
           ),
         ],
       ),
-      body: Center(
-        child: Container(
-          width: MediaQuery.of(context).size.width/2,
-          child: Card(
-            color: Colors.grey,
-            child: ListView.builder(
-              itemCount: 10, // Replace with your list length
-              itemBuilder: (context, index) {
-                return Card(
-                  margin: EdgeInsets.all(10),
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15), // More circular border
-                  ),
-                  child: ListTile(
-                    leading: Icon(Icons.medical_services, color: Colors.cyan.shade800,size: 40,),
-                    title: Text('Order #${index + 1}', style: TextStyle(color: Colors.cyan.shade800, fontWeight: FontWeight.bold)), // Replace with your order title
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Details of Order #${index + 1}', style: TextStyle(color: Colors.grey)), // Replace with your order details
-                        Text('Status: ${orderStatus[index]}', style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.bold)), // Display order status
-                      ],
-                    ),
-                    trailing: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 4.0),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          dropdownColor: Colors.grey.shade100,
-                          value: orderStatus[index],
-                          icon: Icon(Iconsax.arrow_circle_down, color: Colors.cyan),
-                          iconSize: 24,
-                          elevation: 16,
-                          style: TextStyle(color: Colors.cyan, fontSize: 14),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              orderStatus[index] = newValue!;
-                              if (newValue == 'Accepted') {
-                                // Decrease the quantity of the ordered medicine
-                                // Replace 'Medicine Name' with the actual name of the medicine that was ordered
-                                // Replace orderedQuantity with the actual quantity that was ordered
-                                Provider.of<MedicineProvider>(context, listen: false).decreaseQuantity(order.medicineName, order.quantity);
-                              }
-                            });
-                          },
-                          items: statusOptions.map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(value),
+      body: isLoading
+          ? const Center(
+              child:
+                  CircularProgressIndicator()) // Show loading indicator while waiting for server response
+          : orders.isEmpty
+              ? const AlertDialog(
+                  // Show dialog if orders are empty
+                  title: Text('No Orders'),
+                  content: Text('There are currently no orders.'),
+                )
+              : Center(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: Card(
+                      color: Colors.grey,
+                      child: ListView.builder(
+                        itemCount:
+                            orders.length, // Use the length of your orders list
+                        itemBuilder: (context, index) {
+                          return Card(
+                            margin: const EdgeInsets.all(10),
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  15), // More circular border
+                            ),
+                            child: ListTile(
+                              leading: Icon(
+                                Icons.medical_services,
+                                color: Colors.cyan.shade800,
+                                size: 40,
                               ),
-                            );
-                          }).toList(),
-                        ),
+                              title: Text('Order #${orders[index]['id']}',
+                                  style: TextStyle(
+                                      color: Colors.cyan.shade800,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24)), // Increase text size
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Order id:  ${orders[index]['id']}',
+                                      style: const TextStyle(
+                                          color: Colors.grey, fontSize: 20)),
+                                  // Increase text size
+                                  Text('Status: ${orders[index]['status']}',
+                                      style: const TextStyle(
+                                          color: Colors.orangeAccent,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20)),
+                                  ...orderItems[orders[index]['id']]?.map(
+                                          (item) => Text(
+                                              'Medicine name: ${medicines[item['medicine_id']]?.scientificName ?? 'Unknown'}\n'
+                                                  'Medicine_id: ${item['medicine_id']}\n Quantity: ${item['quantity']}',
+                                              style: const TextStyle(
+                                                  fontSize: 24,color: Colors.black
+                                              )
+                                              )) ??
+                                      [],
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors
+                                              .green,
+                                        ),
+                                        onPressed: () async {
+                                          await Server()
+                                              .acceptOrder(orders[index]['id']);
+                                          orders = await Server().getOrders();
+                                          setState(() {});
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text(
+                                                    'Order Accepted'),
+                                                content: Text(
+                                                    'Order #${orders[index]['id']} has been accepted.'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    child: const Text('OK'),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: const Text(
+                                          'Accept Order',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      // Add some space between the buttons
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                        ),
+                                        onPressed: () async {
+                                          await Server().rejectOrder(orders[index]['id']);orders = await Server().getOrders();
+                                          setState(() {}
+                                          );
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text(
+                                                    'Order Rejected'),
+                                                content: Text(
+                                                    'Order #${orders[index]['id']} has been rejected.'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    child: const Text('OK'),
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: const Text('Reject Order',
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
-
                   ),
-                );
-              },
-            ),
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add, color: Colors.white,),
-        backgroundColor: Colors.cyan.shade800,
-        onPressed: () {
-          // Navigate to new order page
-        },
-      ),
+                ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:medicine_warehouse/data/dummy_data.dart';
 import 'package:medicine_warehouse/models/medicine.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medicine_warehouse/server/server.dart';
 import 'package:medicine_warehouse/widgets/medicine_item.dart';
 import 'package:medicine_warehouse/screens/medicine_details.dart';
 
@@ -23,11 +24,13 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
 
   List<Medicine> foundMedicines = [];
 
+
   @override
   void initState() {
-    foundMedicines = [...widget.medicines];
     super.initState();
+    foundMedicines = widget.medicines;
   }
+
 
   // function
   void _searchMedicines(String enteredWord) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medicine_warehouse/data/dummy_data.dart';
+import '../Provider/cart_model.dart';
 import '../models/medicine.dart';
 import 'package:provider/provider.dart';
 
@@ -112,11 +113,10 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                   Center(
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        cartList.add(widget.medicine);
-                        ScaffoldMessenger.of(context).clearSnackBars();
+                        Provider.of<CartModel>(context, listen: false).add(widget.medicine);
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('added to cart.'),
+                            content: Text('Medicine added to cart'),
                           ),
                         );
                       },

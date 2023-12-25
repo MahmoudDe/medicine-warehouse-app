@@ -1,7 +1,7 @@
-// HomeScreen.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:warehouse_owner_app/Server/server.dart';
 import 'package:warehouse_owner_app/screens/NavBar.dart';
 import 'package:warehouse_owner_app/widgets/Filters.dart';
 import 'package:warehouse_owner_app/widgets/TextField.dart';
@@ -9,8 +9,6 @@ import '../Provider/Medicine_Provider.dart';
 import '../classes/Medicine.dart';
 import '../widgets/MedicineCard.dart';
 import 'package:iconsax/iconsax.dart';
-
-
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -20,7 +18,39 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<Medicine> foundMedicines = [];
   final TextEditingController _controller = TextEditingController();
+
+  void searchMedicines(String query) async {
+    List<Medicine> medicines =
+        await Provider.of<MedicineProvider>(context, listen: false)
+            .getMedicines();
+    List<Medicine> matchingMedicines;
+
+    if (query.isEmpty) {
+      matchingMedicines = medicines;
+    } else {
+      matchingMedicines = medicines.where((medicine) {
+        return medicine.scientificName
+                .toLowerCase()
+                .contains(query.toLowerCase()) ||
+            medicine.category.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+    }
+
+    setState(() {
+      foundMedicines = matchingMedicines;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      searchMedicines(_controller.text);
+    });
+    searchMedicines('');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,33 +60,33 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.cyan.shade800,
         elevation: 0.0,
         iconTheme: const IconThemeData(color: Colors.white, size: 28),
-        title: Text('Home Page', style: GoogleFonts.lato(color: Colors.white, fontSize: 22)),
+        title: Text('Home Page',
+            style: GoogleFonts.lato(color: Colors.white, fontSize: 22)),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 25.0),
             child: Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.notifications), // Icon for notifications
+                  icon: const Icon(Icons.notifications),
                   onPressed: () {
                     // Handle notification icon press
                   },
                 ),
-            IconButton(
-              icon: Icon(Iconsax.activity), // Icon for incoming orders
-              onPressed: () {
-                Navigator.pushNamed(context, '/orders');
-                // Handle incoming orders icon press
-              },
+                IconButton(
+                  icon: const Icon(Iconsax.activity),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/orders');
+                  },
+                ),
+              ],
             ),
-                    ],
-                  ),
           ),
         ],
       ),
       body: Row(
         children: [
-          Expanded(
+          const Expanded(
             flex: 1,
             child: Filters(),
           ),
@@ -73,7 +103,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.grey.shade100,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: CustomTextField(hintText: 'search..', controller: _controller, prefixIcon: Icons.search_rounded),
+                      child: CustomTextField(
+                        hintText: 'search..',
+                        controller: _controller,
+                        prefixIcon: Icons.search_rounded,
+                        onChanged: (value) {
+                          searchMedicines(value);
+                        },
+                      ),
                     ),
                   ),
                   Consumer<MedicineProvider>(
@@ -81,29 +118,39 @@ class _HomeScreenState extends State<HomeScreen> {
                       return FutureBuilder<List<Medicine>>(
                         future: medicineProvider.getMedicines(),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return CircularProgressIndicator(color: Colors.orangeAccent,);
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const CircularProgressIndicator(
+                              color: Colors.orangeAccent,
+                            );
                           } else if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
                           } else {
                             List<Medicine> medicines = snapshot.data!;
                             return Flexible(
                               child: FutureBuilder<List<Medicine>>(
-                                future: medicineProvider.getMedicines(),
+                                future: Server().getMedicines(),
                                 builder: (context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                    return CircularProgressIndicator();
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const CircularProgressIndicator();
                                   } else if (snapshot.hasError) {
                                     return Text('Error: ${snapshot.error}');
                                   } else {
                                     List<Medicine> medicines = snapshot.data!;
                                     return GridView.builder(
-                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 4, // Change this number based on your design
-                                      ),
                                       itemCount: medicines.length,
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 4,
+                                      ),
                                       itemBuilder: (context, index) {
-                                        return MedicineCard(medicine: medicines[index]);
+                                        if (index < foundMedicines.length) {
+                                          return MedicineCard(
+                                              medicine: foundMedicines[index]);
+                                        } else {
+                                          return null;
+                                        }
                                       },
                                     );
                                   }
@@ -126,25 +173,28 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Container(
           width: 200,
           child: FloatingActionButton(
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 40.0),
-                  child: Icon(Iconsax.add_circle, color: Colors.white,),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Text("Add Medicine", style: TextStyle(
-                    color: Colors.white
-                  ),),
-                ),
-
-              ],
-            ),
             backgroundColor: Colors.cyan.shade800,
             onPressed: () {
               Navigator.pushNamed(context, '/make_medicine');
             },
+            child: const Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 40.0),
+                  child: Icon(
+                    Iconsax.add_circle,
+                    color: Colors.white,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 8.0),
+                  child: Text(
+                    "Add Medicine",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

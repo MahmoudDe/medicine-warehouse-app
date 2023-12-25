@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
 
   MyApp({required this.initialRoute});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

@@ -24,7 +24,6 @@ class MedicineCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(15), // More circular border
             ),
             child: SingleChildScrollView(
-              // Add this
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,10 +32,9 @@ class MedicineCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ClipRRect(
-                      // Slightly rounded image border
                       borderRadius: BorderRadius.circular(15),
                       child: Image.network(
-                        'assets/images/Profile.jpg', // Replace with your image
+                        'assets/images/medicine.png',// default image
                         width: 300, // Larger image
                         height: 150, // Larger image
                         fit: BoxFit.cover,
@@ -52,14 +50,13 @@ class MedicineCard extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.cyan, // Change color to cyan
+                        color: Colors.cyan,
                       ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8.0, vertical: 4.0),
-                    // Reduced vertical padding
                     child: Text(
                       medicine.category,
                       style: const TextStyle(
@@ -71,12 +68,11 @@ class MedicineCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8.0, vertical: 4.0),
-                    // Reduced vertical padding
                     child: Text(
-                      'Manufacturer: ${medicine.manufacturer}', // Display manufacturer
+                      'Manufacturer: ${medicine.manufacturer}',
                       style: const TextStyle(
                         fontSize: 14,
-                        color: Colors.black, // Change color to black
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -85,12 +81,11 @@ class MedicineCard extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8.0, vertical: 4.0),
-                        // Reduced vertical padding
                         child: Text(
-                          'Quantity: ${medicine.quantity}', // Display quantity
+                          'Quantity: ${medicine.quantity}',
                           style: const TextStyle(
                             fontSize: 14,
-                            color: Colors.black, // Change color to black
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -100,7 +95,7 @@ class MedicineCard extends StatelessWidget {
                           '\$${medicine.price.toStringAsFixed(2)}',
                           style: const TextStyle(
                             fontSize: 16,
-                            color: Colors.green, // Keep price color as green
+                            color: Colors.green,
                           ),
                         ),
                       ),

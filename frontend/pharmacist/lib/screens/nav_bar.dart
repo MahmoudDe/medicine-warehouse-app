@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/dummy_data.dart';
+import '../server/server.dart';
 import 'cart_page.dart';
 
 class NavBar extends StatelessWidget {
@@ -41,7 +42,7 @@ class NavBar extends StatelessWidget {
             leading: const Icon(Icons.shopping_basket),
             title: const Text('Orders'),
             onTap: () {
-              CartPage();
+              Navigator.of(context).pushReplacementNamed('/order');
             },
           ),
           ListTile(
@@ -57,7 +58,11 @@ class NavBar extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('Log Out'),
-            onTap: () {},
+            onTap: () async {
+              Server server = Server();
+              await server.logoutUser();
+              Navigator.of(context).pushReplacementNamed('/login');
+            },
           )
         ],
       ),

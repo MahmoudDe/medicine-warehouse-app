@@ -1,82 +1,41 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:medicine_warehouse/data/dummy_data.dart';
 import 'package:medicine_warehouse/widgets/cartItem.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../Provider/cart_model.dart';
 import '../models/medicine.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class CartPage extends StatefulWidget {
-  CartPage({super.key});
-  @override
-  State<CartPage> createState() {
-    return _CartPageState();
-  }
-}
+import '../server/server.dart';
 
-class _CartPageState extends State<CartPage> {
-  Medicine? removedMedicine;
-  int? removedMedicineIndex;
 
-  void increaseQuantity(int index) {
-    setState(() {
-      cartList[index].quantity++;
-    });
-  }
-
-  void decreaseQuantity(int index) {
-    setState(() {
-      if (cartList[index].quantity > 1) {
-        cartList[index].quantity--;
-      }
-    });
-  }
-
-  void deleteProduct(int index) {
-    setState(() {
-      removedMedicine = cartList[index];
-      removedMedicineIndex = index;
-      cartList.removeAt(index);
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Medicine removed from cart'),
-        action: SnackBarAction(
-          label: 'Undo',
-          onPressed: () {
-            undoDelete();
-          },
-        ),
-      ),
-    );
-  }
-
-  void undoDelete() {
-    setState(() {
-      if (removedMedicine != null && removedMedicineIndex != null) {
-        cartList.insert(removedMedicineIndex!, removedMedicine!);
-        removedMedicine = null;
-        removedMedicineIndex = null;
-      }
-    });
-  }
+class CartPage extends StatelessWidget {
 
   @override
-  Widget build(context) {
-    double totalPrice = cartList.fold(
-        0,
-        (previousValue, element) =>
-            previousValue + (element.price) * (element.quantity));
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Cart',
-          style: TextStyle(fontFamily: 'Avenir'),
+        backgroundColor: Colors.cyan.shade800,
+        title: const Row(
+          children: [
+            Icon(Iconsax.shopping_cart4, color: Colors.white,size: 30,),
+            Text(
+              ' Cart',
+              style: TextStyle(fontFamily: 'Avenir', color: Colors.white,  fontSize: 28),
+            ),
+          ],
         ),
       ),
-      body: ListView.builder(
-          itemCount: cartList.length,
+      body: Consumer<CartModel>(
+        builder: (context, cart, child) => ListView.builder(
+          itemCount: cart.items.length,
           itemBuilder: (context, index) {
             return Dismissible(
-              key: Key(cartList[index].tradeName),
+              key: Key(cart.items[index].tradeName),
               direction: DismissDirection.endToStart,
               background: Container(
                 color: Colors.red,
@@ -89,51 +48,71 @@ class _CartPageState extends State<CartPage> {
               ),
               onDismissed: (direction) {
                 // Delete the item from the cart
-                deleteProduct(index);
+                cart.remove(cart.items[index]);
               },
               child: CartItemWidget(
-                medicine: cartList[index],
-                increaseQuantity: () => increaseQuantity(index),
-                decreaseQuantity: () => decreaseQuantity(index),
+                medicine: cart.items[index],
               ),
             );
-          }),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // Place order logic
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Order placed successfully'),
-            ),
-          );
-        },
-        label: const Text('Place Order'),
-        backgroundColor: Colors.cyan,
-        icon: const Icon(Icons.shopping_cart),
+          },
+        ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          // Fetch user id and date automatically
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          int userId = prefs.getInt('user_id') ?? -1; // replace -1 with a default value or handle it appropriately
+          String date = DateTime.now().toIso8601String();
+
+          // Place order logic
+          int orderId = await Server().postNewOrder(userId, 'pending', date);
+          if (orderId != -1) {
+            await Server().postOrderItems(Provider.of<CartModel>(context, listen: false).items, orderId);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Order placed successfully'),
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Failed to place order'),
+              ),
+            );
+          }
+        },
+        label: const Text('Place Order', style: TextStyle(
+            color: Colors.white
+        ),),
+        backgroundColor: Colors.cyan.shade800,
+        icon: const Icon(Icons.shopping_cart, color: Colors.white,),
+      ),
+
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(16),
-        color: Colors.grey[200],
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'Total Price:',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+      bottomNavigationBar: Consumer<CartModel>(
+        builder: (context, cart, child) => Container(
+          padding: const EdgeInsets.all(16),
+          color: Colors.grey[200],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Total Price:',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Text(
-              '\$${totalPrice.toStringAsFixed(2)}',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
+              Text(
+                '\$${cart.totalPrice.toStringAsFixed(2)}',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.orangeAccent,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

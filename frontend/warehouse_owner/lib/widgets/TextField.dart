@@ -35,9 +35,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
             setState(() {
               _hasError = true;
             });
-            return 'Please Enter your data!'; // Custom error message
+            return 'Please Enter your data!';
           }
-          // Add more complex validation here if needed
           setState(() {
             _hasError = false;
           });
@@ -62,26 +61,25 @@ class _CustomTextFieldState extends State<CustomTextField> {
             borderRadius: BorderRadius.circular(20),
             borderSide: const BorderSide(color: Colors.orange),
           ),
-          errorStyle: TextStyle(
-            color: Colors.redAccent, // change this color to change the color of the error text
-            fontSize: 14, // change this size to change the size of the error text
+          errorStyle: const TextStyle(
+            color: Colors.redAccent,
+            fontSize: 14,
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
-            borderSide: BorderSide(
-              color: Colors.red, // change this color to change the color of the error border
-              width: 1, // change this size to change the width of the error border
+            borderSide: const BorderSide(
+              color: Colors.red,
+              width: 1,
             ),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
-            borderSide: BorderSide(
-              color: Colors.red, // change this color to change the color of the error border when the field is focused
-              width: 2, // change this size to change the width of the error border when the field is focused
+            borderSide: const BorderSide(
+              color: Colors.red,
+              width: 2,
             ),
           ),
         ),
-
       ),
     );
   }

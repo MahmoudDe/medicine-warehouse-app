@@ -33,6 +33,8 @@ Route::post('/users/register', [AuthController::class, 'register']);
 // to login 
 Route::post('/users/login', [AuthController::class, 'login']);
 
+
+
 // Return All Medicines from Database 
 
 Route::get('/medicines', [MedicineController::class, 'index']);
@@ -42,7 +44,7 @@ Route::get('/medicines', [MedicineController::class, 'index']);
 Route::get('/categories', [CategoryController::class, 'index']);
 
 
-
+/*User Routes*/
 Route::group((['middleware' => ['auth:sanctum']]), function () {
 
 
@@ -52,13 +54,8 @@ Route::group((['middleware' => ['auth:sanctum']]), function () {
     // Show By Categories (Filtering)
     Route::get('/medicines/search/{category}', [MedicineController::class, 'search']);
 
-    // useres api 
-    // to register
-    // Route::post('/users/register', [AuthController::class, 'register']);
-    // to login 
-    // Route::post('/users/login', [AuthController::class, 'login']);
-    //to logout
-    // Route::post('/users/logout', [AuthController::class, 'logout']);
+    // Logout user
+    Route::post('/users/logout', [AuthController::class, 'logout']);
 
 });
 
@@ -85,13 +82,6 @@ Route::group((['prefix' => 'admin', 'middleware' => ['auth:sanctum']]), function
     Route::post('/categories', [CategoryController::class, 'store']);
 });
 
-
-/*User Routes*/
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-
-    return $request->user();
-});
 
 
 /*Order Routes*/

@@ -39,14 +39,14 @@ class _DateInputState extends State<DateInput> {
         Expanded(
           child: TextFormField(
             controller: _dateController,
-            readOnly: true, // This makes the field uneditable
+            readOnly: true,
             decoration: InputDecoration(
               hintText: 'Expiry Date',
             ),
           ),
         ),
 
-        SizedBox(width: 10), // Add some spacing between the text field and the button
+        SizedBox(width: 10),
         BorderButton(
           onPressed: _selectDate,
           text: 'Select Expiry Date',

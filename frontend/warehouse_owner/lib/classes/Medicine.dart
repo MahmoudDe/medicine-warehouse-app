@@ -8,7 +8,7 @@ class Medicine {
   int quantity;
   DateTime expiryDate;
   double price;
-  String? image; // Add this line
+  String? image;
 
   Medicine({
     required this.id,
@@ -20,7 +20,7 @@ class Medicine {
     required this.quantity,
     required this.expiryDate,
     required this.price,
-    this.image, // Add this line
+    this.image,
   });
 
   factory Medicine.fromJson(Map<String, dynamic> json) {
@@ -34,7 +34,7 @@ class Medicine {
       quantity: json['quantity'],
       expiryDate: DateTime.parse(json['expiry_date']),
       price: double.tryParse(json['price']) ?? 0.0,
-      image: json['image'], // Add this line
+      image: json['image'],
     );
   }
 
@@ -49,7 +49,7 @@ class Medicine {
       'quantity': quantity,
       'expiry_date': expiryDate.toIso8601String(),
       'price': price,
-      'image': image, // Add this line
+      'image': image,
     };
   }
 }

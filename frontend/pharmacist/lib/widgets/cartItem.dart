@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../Provider/cart_model.dart';
 import '../models/medicine.dart';
+import 'package:iconsax/iconsax.dart';
 
 class CartItemWidget extends StatelessWidget {
   final Medicine medicine;
-  final VoidCallback increaseQuantity;
-  final VoidCallback decreaseQuantity;
 
   const CartItemWidget({
     super.key,
     required this.medicine,
-    required this.increaseQuantity,
-    required this.decreaseQuantity,
   });
 
   @override
@@ -42,11 +41,14 @@ class CartItemWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  medicine.tradeName,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    medicine.scientificName,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -62,16 +64,24 @@ class CartItemWidget extends StatelessWidget {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: decreaseQuantity,
-                      icon: const Icon(Icons.remove),
+                      onPressed: () {
+                        Provider.of<CartModel>(context, listen: false).remove(medicine);
+                        medicine.quantity--;
+                        if (medicine.quantity > 1) {
+                          Provider.of<CartModel>(context, listen: false).add(medicine);
+                        }
+                      },
+                      icon: const Icon(Iconsax.minus_cirlce5, color: Colors.orangeAccent,size: 30,),
                     ),
                     Text(
                       medicine.quantity.toString(),
-                      style: const TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     IconButton(
-                      onPressed: increaseQuantity,
-                      icon: const Icon(Icons.add),
+                      onPressed: () {
+                        Provider.of<CartModel>(context, listen: false).add(medicine);
+                      },
+                      icon: const Icon(Iconsax.add_circle5, color: Colors.cyan,size: 30),
                     ),
                   ],
                 ),

@@ -42,10 +42,8 @@ class _CategoryInputState extends State<CategoryInput> {
             BorderButton(
               text: 'Submit',
               onPressed: () async {
-                // Call the addCategory method here
                 await Server().addCategory({'name': _controller.text});
 
-                // Clear the text field and show a success message
                 _controller.clear();
                 Navigator.pushNamed(context, '/home');
                 ScaffoldMessenger.of(context).showSnackBar(
