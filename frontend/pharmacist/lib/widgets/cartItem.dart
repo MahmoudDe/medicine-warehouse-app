@@ -68,7 +68,7 @@ class CartItemWidget extends StatelessWidget {
                         Provider.of<CartModel>(context, listen: false).remove(medicine);
                         medicine.quantity--;
                         if (medicine.quantity > 1) {
-                          Provider.of<CartModel>(context, listen: false).add(medicine);
+                          Provider.of<CartModel>(context, listen: false).add(medicine, context);
                         }
                       },
                       icon: const Icon(Iconsax.minus_cirlce5, color: Colors.orangeAccent,size: 30,),
@@ -79,7 +79,7 @@ class CartItemWidget extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: () {
-                        Provider.of<CartModel>(context, listen: false).add(medicine);
+                        Provider.of<CartModel>(context, listen: false).add(medicine, context);
                       },
                       icon: const Icon(Iconsax.add_circle5, color: Colors.cyan,size: 30),
                     ),

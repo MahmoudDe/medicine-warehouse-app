@@ -20,7 +20,7 @@ class MedicineDetailsScreen extends StatefulWidget {
 
 class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
   late bool isFavorite;
-
+  int _medicineIdCounter = 0;
   @override
   void initState() {
     isFavorite = widget.medicine.isFavorite;
@@ -113,7 +113,9 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                   Center(
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        Provider.of<CartModel>(context, listen: false).add(widget.medicine);
+                        // Add the widget.medicine object to the cart
+                        Provider.of<CartModel>(context, listen: false).add(widget.medicine, context);
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Medicine added to cart'),

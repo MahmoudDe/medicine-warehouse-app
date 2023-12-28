@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:medicine_warehouse/data/dummy_data.dart';
 import 'package:medicine_warehouse/models/medicine.dart';
@@ -11,18 +12,18 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreen extends State<FavoriteScreen> {
-//  final List<Medicine> _FavoriteMedicines = [];
+  // final List<Medicine> _FavoriteMedicines = [];
 
-//   void _toggleMedicineFavoriteStatus(Medicine medicine) {
-//     setState(() {
-//       _FavoriteMedicines.add(medicine);
-//     });
-//   }
+  // void _toggleMedicineFavoriteStatus(Medicine medicine) {
+  //   setState(() {
+  //     _FavoriteMedicines.add(medicine);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return MedicinesScreen(
-      title: 'Favorites',
+      title: tr('Favorites'),
       medicines: favoritList,
     );
   }

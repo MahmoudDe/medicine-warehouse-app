@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
@@ -29,12 +30,12 @@ class LoginPage extends StatelessWidget {
                     MediaQuery.of(context).size.height / 4 + 30),
                 painter: WavePainter(),
               ),
-              const Padding(
+               Padding(
                 padding: EdgeInsets.only(top: 110.0, left: 16.0),
                 child: Text(
-                  "Welcome to your\npharmacy!",
+                  (tr("welcomeToYourPharmacy")),
                   style: TextStyle(
-                    fontFamily: 'Avenir',
+                    fontFamily: 'Tajawal',
                     fontWeight: FontWeight.normal,
                     fontSize: 45,
                     color: Colors.cyan,
@@ -52,7 +53,7 @@ class LoginPage extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: CustomTextField(
                   controller: emailController,
-                  hintText: 'Enter your Email',
+                  hintText: tr('enterYourEmail'),
                   prefixIcon: Iconsax.profile_circle),
             ),
             const SizedBox(height: 20),
@@ -60,7 +61,7 @@ class LoginPage extends StatelessWidget {
               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
               child: CustomTextField(
                 controller: passwordController,
-                hintText: "Enter your Password",
+                hintText: tr("enterYourPassword"),
                 prefixIcon: Iconsax.lock,
               ),
             ),
@@ -74,7 +75,7 @@ class LoginPage extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: BorderButton(text: "Register", onPressed: () {
+                      child: BorderButton(text: tr("register"), onPressed: () {
                         Navigator.pushNamed(context, '/register');
 
                       }),
@@ -110,7 +111,7 @@ class LoginPage extends StatelessWidget {
                             );
                           }
                         },
-                        text: 'Login',
+                        text: tr('login'),
                       )
                     ),
                   ),

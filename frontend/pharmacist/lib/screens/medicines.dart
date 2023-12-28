@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:medicine_warehouse/data/dummy_data.dart';
 import 'package:medicine_warehouse/models/medicine.dart';
@@ -64,7 +65,7 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Uh oh...nothing here!',
+              tr('Uh oh...nothing here!'),
               style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                     color: Theme.of(context).colorScheme.onBackground,
                   ),
@@ -73,7 +74,7 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
               height: 16,
             ),
             Text(
-              'Try selecting a different category',
+              tr('Try selecting a different category'),
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     color: Theme.of(context).colorScheme.onBackground,
                   ),
@@ -119,8 +120,8 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
                       _controller.clear();
                     },
                   ),
-                  hintText: 'Search for a medicine...',
-                  hintStyle: const TextStyle(fontFamily: 'Avenir'),
+                  hintText: tr('Search for a medicine...'),
+                  hintStyle: const TextStyle(fontFamily: 'Tajawal'),
                   border: InputBorder.none,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),

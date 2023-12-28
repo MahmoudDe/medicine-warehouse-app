@@ -30,6 +30,9 @@ class CustomTextField extends StatelessWidget {
             },
           ),
           hintText: hintText,
+          hintStyle: TextStyle(
+            fontFamily: 'Tajawal'
+          ),
           border: InputBorder.none,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),

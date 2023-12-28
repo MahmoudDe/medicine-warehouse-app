@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medicine_warehouse/data/dummy_data.dart';
@@ -50,8 +51,11 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0.0,
         iconTheme: const IconThemeData(color: Colors.white, size: 28),
         title: Text(
-          'Home Page',
-          style: GoogleFonts.lato(color: Colors.white, fontSize: 22),
+          tr('homePage'),
+          style: TextStyle(
+            fontFamily: 'Tajawal', color: Colors.white
+          ),
+          // style: GoogleFonts.lato(color: Colors.white, fontSize: 22),
         ),
       ),
       body: Column(
@@ -73,8 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       _controller.clear();
                     },
                   ),
-                  hintText: 'Search for a category...',
-                  hintStyle: const TextStyle(fontFamily: 'Avenir'),
+                  hintText: tr('search for a category'),
+                  hintStyle: const TextStyle(fontFamily: 'Messiri'),
                   border: InputBorder.none,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),

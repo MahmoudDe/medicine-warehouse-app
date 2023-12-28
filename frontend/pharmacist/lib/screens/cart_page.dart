@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:medicine_warehouse/data/dummy_data.dart';
@@ -20,12 +20,12 @@ class CartPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan.shade800,
-        title: const Row(
+        title:  Row(
           children: [
             Icon(Iconsax.shopping_cart4, color: Colors.white,size: 30,),
             Text(
-              ' Cart',
-              style: TextStyle(fontFamily: 'Avenir', color: Colors.white,  fontSize: 28),
+                tr('cart'),
+              style: TextStyle(fontFamily: 'Tajawal', color: Colors.white,  fontSize: 27),
             ),
           ],
         ),
@@ -35,7 +35,7 @@ class CartPage extends StatelessWidget {
           itemCount: cart.items.length,
           itemBuilder: (context, index) {
             return Dismissible(
-              key: Key(cart.items[index].tradeName),
+              key: Key(cart.items[index].medicineId.toString()), // Use medicineId as the key
               direction: DismissDirection.endToStart,
               background: Container(
                 color: Colors.red,
@@ -57,7 +57,7 @@ class CartPage extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
+        floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           // Fetch user id and date automatically
           SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -81,7 +81,7 @@ class CartPage extends StatelessWidget {
             );
           }
         },
-        label: const Text('Place Order', style: TextStyle(
+        label:  Text(tr('placeOrder'), style: TextStyle(
             color: Colors.white
         ),),
         backgroundColor: Colors.cyan.shade800,
@@ -96,8 +96,7 @@ class CartPage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Total Price:',
+               Text(tr('totalPrice'),
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

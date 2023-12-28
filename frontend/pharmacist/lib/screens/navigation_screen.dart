@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:iconsax/iconsax.dart';
@@ -52,18 +53,18 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 },
               );
             },
-            tabs: const [
+            tabs: [
               GButton(
                 icon: Iconsax.home,
-                text: 'Home',
+                text: tr('Home'),
               ),
               GButton(
                 icon: Iconsax.shopping_cart,
-                text: 'cart',
+                text:  tr('Cart'),
               ),
               GButton(
                 icon: Iconsax.heart,
-                text: 'Favorite',
+                text: tr('Favorite'),
               ),
             ],
           ),

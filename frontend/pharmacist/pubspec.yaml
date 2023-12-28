@@ -6,11 +6,14 @@ version: 1.0.0+1
 environment:
   sdk: ">=3.1.5 <4.0.0"
 
+
 dependencies:
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.4.9
   riverpod_annotation: ^2.3.3
+  easy_localization: ^3.0.0
+
 
   cupertino_icons: ^1.0.2
   iconsax: ^0.0.8
@@ -34,9 +37,13 @@ dev_dependencies:
   riverpod_lint: ^2.3.7
   flutter_lints: ^2.0.0
 
+  flutter_localizations:
+    sdk: flutter
 flutter:
   uses-material-design: true
   assets:
+
+    - assets/l10n/
     - assets/images/
   fonts:
     - family: Avenir
@@ -45,3 +52,6 @@ flutter:
     - family: Messiri
       fonts:
         - asset: assets/fonts/Messiri/ElMessiri-Regular.ttf
+    - family: Tajawal
+      fonts:
+        - asset: assets/fonts/Tajawal/Tajawal-Regular.ttf

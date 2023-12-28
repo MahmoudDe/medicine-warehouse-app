@@ -101,7 +101,13 @@ class Server {
       var response = await dio.get('http://localhost:8000/api/medicines');
       if (response.statusCode == 200) {
         List<dynamic> medicinesJson = response.data;
-        List<Medicine> medicines = medicinesJson.map((json) => Medicine.fromJson(json)).toList();
+        List<Medicine> medicines = medicinesJson.map((json) {
+          // Create a new Medicine object with the id and maxQuantity from the API
+          var medicine = Medicine.fromJson(json);
+          medicine.medicineId = json['id']; // Set the medicineId to the id from the API
+          medicine.maxQuantity = json['quantity']; // This is for the quantity condition
+          return medicine;
+        }).toList();
         return medicines;
       } else {
         throw Exception('Failed to load medicines');
@@ -111,6 +117,7 @@ class Server {
       return [];
     }
   }
+
 
   Future<List<Medicine>> getMedicinesByCategory(String category) async {
     // Retrieve the user token from SharedPreferences
@@ -159,18 +166,21 @@ class Server {
       return -1;
     }
   }
-
   Future<void> postOrderItems(List<Medicine> items, int orderId) async {
     try {
       for (var item in items) {
+        var data = {
+          'order_id': orderId,
+          'medicine_id': item.medicineId,
+          'quantity': item.quantity,
+          'cost': item.price * item.quantity,
+        };
+
+        print('Posting the following data: $data'); // Print the data
+
         var response = await dio.post(
           'http://localhost:8000/api/order_items',
-          data: {
-            'order_id': orderId,
-            'medicine_id': item.medicineId,
-            'quantity': item.quantity,
-            'cost': item.price * item.quantity,
-          },
+          data: data,
         );
 
         if (response.statusCode == 201) {
@@ -183,6 +193,33 @@ class Server {
       print('Error: $e');
     }
   }
+
+
+
+
+  Future<void> deleteUserAccount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+
+    var options = Options(
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    try {
+      var response = await dio.delete('http://localhost:8000/api/users/delete', options: options);
+      if (response.statusCode == 200) {
+        print('User account deleted successfully');
+      } else {
+        print('Failed to delete user account');
+      }
+    } catch (e) {
+      print('Request failed with error: $e');
+    }
+  }
+
+
 
 
 }

@@ -57,7 +57,6 @@ Route::group((['middleware' => ['auth:sanctum']]), function () {
     // Logout user
     Route::post('/users/logout', [AuthController::class, 'logout']);
     // Create New Order :: User
-    Route::post('/orders', [OrderController::class, 'store']);
 
     // Show All Orders
     Route::get('/orders', [OrderController::class, 'index']);
@@ -98,8 +97,10 @@ Route::group((['prefix' => 'admin', 'middleware' => ['auth:sanctum']]), function
     Route::post('orders/{order}/reject', [OrderController::class, 'rejectOrder']);
 });
 
+Route::post('/orders', [OrderController::class, 'store']);
 
 
+Route::get('/orders', [OrderController::class, 'index']);
 
 
 /*Order Routes*/

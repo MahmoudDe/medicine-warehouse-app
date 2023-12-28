@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 class Medicine {
-  final int medicineId;
+   int medicineId;
   int quantity;
   final double price;
   bool isFavorite;
@@ -13,6 +13,7 @@ class Medicine {
   final String expiryDate;
   final String description;
   final String medicineName;
+   int maxQuantity;
 
   Medicine(
       this.medicineId,
@@ -27,11 +28,13 @@ class Medicine {
       this.description,
       this.image,
       this.medicineName,
+      this.maxQuantity,
+
       );
 
   factory Medicine.fromJson(Map<String, dynamic> json) {
     return Medicine(
-      json['medicine_id']?? 1,
+      json['id'],
       json['isFavorite'] ?? false,
       double.parse(json['price']),
       json['quantity'],
@@ -43,8 +46,10 @@ class Medicine {
       json['description'] ?? '',
       json['image'] ?? 'assets/images/Medicine 1.jpg',
       json['medicineName'] ?? 'Medicine',
+      json['quantity'] ?? 0,
     );
   }
+
   @override
   String toString() {
     return 'Medicine: $medicineName, $scientificName, $tradeName, $category, $manufacturer, $expiryDate, $description';

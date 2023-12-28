@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../data/dummy_data.dart';
+import '../main.dart';
 import '../server/server.dart';
 import 'cart_page.dart';
 
@@ -35,29 +37,63 @@ class NavBar extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.email),
-            title: const Text('Email'),
+            title: Text(tr('email')),
             onTap: () {},
           ),
           ListTile(
             leading: const Icon(Icons.shopping_basket),
-            title: const Text('Orders'),
+            title: Text(tr('orders')),
             onTap: () {
               Navigator.of(context).pushReplacementNamed('/order');
             },
           ),
           ListTile(
             leading: const Icon(Icons.change_circle),
-            title: const Text('Change Language'),
-            onTap: () {},
+            title: Text(tr('changeLanguage')),
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text(tr('chooseLanguage')),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ListTile(
+                          leading: Icon(Icons.language),
+                          title: Text(tr('english'), style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.bold)),
+                          onTap: () {
+                            context.setLocale(Locale('en', 'US'));
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.language),
+                          title: Text(tr('arabic'), style: TextStyle(color: Colors.cyan.shade700, fontWeight: FontWeight.bold)),
+                          onTap: () {
+                            context.setLocale(Locale('ar', ''));
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
           ),
+
           ListTile(
             leading: const Icon(Icons.delete),
-            title: const Text('Delete Account'),
-            onTap: () {},
+            title: Text(tr('deleteAccount')),
+            onTap: () async {
+              await Server().deleteUserAccount();
+              Navigator.of(context).pushReplacementNamed('/login');
+            },
           ),
           ListTile(
             leading: const Icon(Icons.logout),
-            title: const Text('Log Out'),
+            title: Text(tr('logOut')),
             onTap: () async {
               Server server = Server();
               await server.logoutUser();
