@@ -10,18 +10,19 @@ class NavBar extends StatelessWidget {
   @override
   Widget build(context) {
     return Drawer(
+      backgroundColor: Colors.white,
       elevation: 0.0,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           const UserAccountsDrawerHeader(
             accountName: Text(
-              'Bader Awad',
+              'User',
               style:
                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
             accountEmail: Text(
-              'bader33.awad@gmail.com',
+              'user@example.com',
               style: TextStyle(color: Colors.white, fontSize: 14),
             ),
             currentAccountPicture: CircleAvatar(

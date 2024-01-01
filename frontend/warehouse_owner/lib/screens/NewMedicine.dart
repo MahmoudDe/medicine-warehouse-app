@@ -37,9 +37,50 @@ class _NewMedicineFormState extends State<NewMedicineForm> {
         print('$key: $value');
       });
       Server server = Server();
-      await server.addMedicine(_medicineData);
+      try {
+        await server.addMedicine(_medicineData);
+        // Show success alert dialog
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Success!'),
+              content: Text('Medicine added successfully.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    // Navigate to the previous screen or perform any other action
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } catch (error) {
+        // Show error alert dialog
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('Failed to add medicine: $error'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

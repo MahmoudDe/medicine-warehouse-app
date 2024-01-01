@@ -156,6 +156,15 @@ class _FiltersState extends State<Filters> {
               },
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: CustomElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/make_category');
+              },
+              text: 'Add Category',
+            ),
+          ),
         ],
       ),
     );

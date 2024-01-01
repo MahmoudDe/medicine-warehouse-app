@@ -113,14 +113,14 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                   Center(
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        // Add the widget.medicine object to the cart
-                        Provider.of<CartModel>(context, listen: false).add(widget.medicine, context);
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Medicine added to cart'),
-                          ),
-                        );
+                        bool wasAdded = Provider.of<CartModel>(context, listen: false).add(widget.medicine, context);
+                        if (wasAdded) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Medicine added to cart'),
+                            ),
+                          );
+                        }
                       },
                       icon: const Icon(Icons.shopping_cart),
                       label: const Text('Buy Now'),

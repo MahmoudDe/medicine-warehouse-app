@@ -4,8 +4,30 @@ import 'package:provider/provider.dart';
 import '../Provider/cart_model.dart';
 import '../models/Order.dart';
 import '../models/medicine.dart';
+import '../server/server.dart';
 
-class OrderPage extends StatelessWidget {
+
+class OrderPage extends StatefulWidget {
+  @override
+  _OrderPageState createState() => _OrderPageState();
+}
+
+class _OrderPageState extends State<OrderPage> {
+  final Server server = Server(); // replace with your Server instance
+  late Future<List<dynamic>> futureOrders;
+
+  @override
+  void initState() {
+    super.initState();
+    futureOrders = server.getOrdersForUser(); // fetch orders for user
+  }
+
+  Future<void> _refreshOrders() async {
+    setState(() {
+      futureOrders = server.getOrdersForUser(); // fetch orders for user
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,26 +41,52 @@ class OrderPage extends StatelessWidget {
         title: Row(
           children: [
             Text('Order Page', style: TextStyle(
-              fontSize: 25,
-              color: Colors.white
+                fontSize: 25,
+                color: Colors.white
             ),),
           ],
         ),
         backgroundColor: Colors.cyan.shade700,
       ),
-      body: Consumer<CartModel>(
-        builder: (context, cart, child) {
-          return ListView.builder(
-            itemCount: cart.items.length,
-            itemBuilder: (context, index) {
-              return OrderItemTile(cart.items[index], Order(orderId: 1, userId: 1, status: 'pending', date: ''));
-            },
-          );
-        },
+      body: RefreshIndicator(
+        onRefresh: _refreshOrders,
+        child: FutureBuilder<List<dynamic>>(
+          future: futureOrders,
+          builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator(color: Colors.orangeAccent,)); // show loading spinner while waiting for data
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}'); // show error message if something went wrong
+            } else {
+              // snapshot.data contains your list of orders
+              if (snapshot.data?.isEmpty ?? true) {
+                return Center(child: Text('No orders found')); // show message when there are no orders
+              } else {
+                return ListView.builder(
+                  itemCount: snapshot.data?.length,
+                  itemBuilder: (context, index) {
+                    var order = snapshot.data?[index];
+                    var medicine = Medicine.fromJson(order['items'][0]['medicine']);
+
+                    print('Medicine Name in ListView.builder: ${medicine.scientificName}');
+                    print('Medicine Price in ListView.builder: ${medicine.price}');
+
+                    return OrderItemTile(medicine, Order.fromJson(order));
+                  },
+                );
+
+
+              }
+            }
+          },
+        ),
       ),
     );
   }
 }
+
+
+
 class OrderItemTile extends StatelessWidget {
   final Medicine item;
   final Order order;
@@ -47,6 +95,9 @@ class OrderItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Medicine Name in OrderItemTile: ${item.scientificName}');
+    print('Medicine Price in OrderItemTile: ${item.price}');
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
@@ -61,11 +112,7 @@ class OrderItemTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(15.0),
           ),
           child: ListTile(
-            leading: Icon(
-              _getOrderStatusIcon(order.status), // replace with function to get icon based on status
-              color: Colors.orangeAccent,
-              size: 50,
-            ),
+            leading: Image.asset('assets/images/medicine.png'),
             title: Text(
               item.scientificName,
               style: const TextStyle(
@@ -75,16 +122,16 @@ class OrderItemTile extends StatelessWidget {
             ),
             subtitle: Text('Quantity: ${item.quantity}\nPrice: ${item.price}'),
             trailing: Container(
-              width: 80,
+              width: 90,
               height: 40,
               padding: EdgeInsets.all(8.0),
               decoration: BoxDecoration(
-                color: _getOrderStatusColor(order.status), // replace with function to get color based on status
+                color: _getOrderStatusColor(order.status),
                 borderRadius: BorderRadius.circular(15.0),
               ),
               child: Center(
                 child: Text(
-                  order.status, // replace with actual status
+                  order.status,
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
               ),
@@ -94,6 +141,7 @@ class OrderItemTile extends StatelessWidget {
       ),
     );
   }
+}
 
   IconData _getOrderStatusIcon(String status) {
     // replace with your own logic to return different icons based on status
@@ -111,14 +159,13 @@ class OrderItemTile extends StatelessWidget {
 
   Color _getOrderStatusColor(String status) {
     switch (status) {
-      case 'Delivered':
+      case 'Preparing':
         return Colors.green;
       case 'Processing':
         return Colors.orange;
-      case 'Cancelled':
+      case 'Rejected':
         return Colors.red;
       default:
-        return Colors.cyan.shade700;
+        return Colors.orange;
     }
   }
-}

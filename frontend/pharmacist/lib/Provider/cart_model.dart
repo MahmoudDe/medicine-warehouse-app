@@ -11,17 +11,14 @@ class CartModel extends ChangeNotifier {
       _items.values.fold(
           0, (total, current) => total + current.price * current.quantity);
 
-  void add(Medicine item, BuildContext context) {
+  bool add(Medicine item, BuildContext context) {
     String idKey = item.medicineId.toString() + item.scientificName;
     if (_items.containsKey(idKey)) {
-      // Item already exists in the cart
       if (_items[idKey]!.quantity < item.maxQuantity) {
-        // The quantity in the cart is less than the quantity in the warehouse
         _items[idKey]!.quantity++;
-        print('Quantity in the cart: ${_items[idKey]!.quantity}');
-        print('Quantity in the warehouse: ${item.maxQuantity}');
+        notifyListeners();
+        return true;
       } else {
-        // The quantity in the cart is more than or equal to the quantity in the warehouse
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -39,14 +36,14 @@ class CartModel extends ChangeNotifier {
             );
           },
         );
+        return false;
       }
     } else {
-      // Item doesn't exist in the cart, add it with quantity 1
       final newItem = Medicine(
         item.medicineId,
         item.isFavorite,
         item.price,
-        1, // set quantity to 1
+        1,
         item.scientificName,
         item.tradeName,
         item.category,
@@ -58,9 +55,9 @@ class CartModel extends ChangeNotifier {
         item.maxQuantity,
       );
       _items[idKey] = newItem;
-      print('New item added to the cart with quantity 1');
+      notifyListeners();
+      return true;
     }
-    notifyListeners();
   }
 
 

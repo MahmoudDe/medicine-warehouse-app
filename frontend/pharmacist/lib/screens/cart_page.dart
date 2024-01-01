@@ -18,8 +18,9 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.cyan.shade800,
+        backgroundColor: Colors.cyan.shade700,
         title:  Row(
           children: [
             Icon(Iconsax.shopping_cart4, color: Colors.white,size: 30,),

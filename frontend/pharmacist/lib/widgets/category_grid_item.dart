@@ -24,7 +24,7 @@ class CategoryGridItem extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.grey.shade300,
+              color: Colors.cyan.shade50,
             ),
             child: Image.asset(
               category.imageUrl,

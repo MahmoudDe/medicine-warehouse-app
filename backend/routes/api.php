@@ -90,11 +90,7 @@ Route::group((['prefix' => 'admin', 'middleware' => ['auth:sanctum']]), function
     // To Create New Category :: Used By Admin  
     Route::post('/categories', [CategoryController::class, 'store']);
 
-    // To Accept Order :: Admin
-    Route::post('orders/{order}/accept', [OrderController::class, 'acceptOrder']);
 
-    // To Reject Order :: Admin
-    Route::post('orders/{order}/reject', [OrderController::class, 'rejectOrder']);
 });
 
 Route::post('/orders', [OrderController::class, 'store']);
@@ -104,6 +100,13 @@ Route::get('/orders', [OrderController::class, 'index']);
 
 
 /*Order Routes*/
+Route::get('/orders/user/{userId}', [OrderController::class, 'indexForUser']);
+
+// To Accept Order :: Admin
+Route::post('orders/{order}/accept', [OrderController::class, 'acceptOrder']);
+
+// To Reject Order :: Admin
+Route::post('orders/{order}/reject', [OrderController::class, 'rejectOrder']);
 
 // Show Order by order_id
 Route::get('/orders/{order}', [OrderController::class, 'show']);

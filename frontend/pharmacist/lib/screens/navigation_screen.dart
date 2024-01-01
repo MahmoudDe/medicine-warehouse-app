@@ -18,6 +18,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     final mediaQuery = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       // appBar: Constants.index == 0 ? appBar(): null,
       bottomNavigationBar: Container(
         margin: EdgeInsets.symmetric(

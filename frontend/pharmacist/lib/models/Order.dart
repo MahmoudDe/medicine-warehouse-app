@@ -15,13 +15,16 @@ class Order {
 
   factory Order.fromJson(Map<String, dynamic> json) {
     return Order(
-      orderId: json['order_id'],
-      userId: json['user_id'],
-      status: json['status'],
-      date: json['date'],
-      totalAmount: json['total_amount'],
+      orderId: json['order_id'] ?? 1, // default value is 0
+      userId: json['user_id'] ?? 1, // default value is 0
+      status: json['status'] ?? 'waiting for warehouse', // provide a default value
+      date: json['date'] ?? 'default date', // provide a default value
+      totalAmount: double.parse(json['total_amount'] ?? '0.0'), // default value is 0.0
     );
   }
+
+
+
 
   Map<String, dynamic> toJson() {
     return {

@@ -32,23 +32,41 @@ class Medicine {
 
       );
 
-  factory Medicine.fromJson(Map<String, dynamic> json) {
-    return Medicine(
-      json['id'],
-      json['isFavorite'] ?? false,
-      double.parse(json['price']),
-      json['quantity'],
-      json['scientific_name'] ?? 'Medicine scientific name',
-      json['tradeName'] ?? '',
-      json['category'] ?? 'baby',
-      json['manufacturer'] ?? '',
-      json['expiryDate'] ?? '',
-      json['description'] ?? '',
-      json['image'] ?? 'assets/images/Medicine 1.jpg',
-      json['medicineName'] ?? 'Medicine',
-      json['quantity'] ?? 0,
-    );
-  }
+   factory Medicine.fromJson(Map<String, dynamic> json) {
+     return Medicine(
+       json['id'],
+       json['isFavorite'] ?? false,
+       (json['price'] is String) ? double.parse(json['price']) : json['price'],
+       json['quantity'] ?? 0,
+       json['scientific_name'] ?? 'Medicine Name',
+       json['tradeName'] ?? '',
+       json['category'] ?? 'baby',
+       json['manufacturer'] ?? '',
+       json['expiryDate'] ?? '',
+       json['description'] ?? '',
+       json['image'] ?? 'assets/images/medicine.png',
+       json['medicineName'] ?? 'Medicine',
+       json['quantity'] ?? 0,
+     );
+   }
+
+   Map<String, dynamic> toJson() {
+     return {
+       'id': medicineId,
+       'isFavorite': isFavorite,
+       'price': price,
+       'quantity': quantity,
+       'scientific_name': scientificName,
+       'tradeName': tradeName,
+       'category': category,
+       'manufacturer': manufacturer,
+       'expiryDate': expiryDate,
+       'description': description,
+       'image': image,
+       'medicineName': medicineName,
+       'maxQuantity': maxQuantity,
+     };
+   }
 
   @override
   String toString() {

@@ -106,7 +106,7 @@ class _OrderPageState extends State<OrderPage> {
                                           fontSize: 20)),
                                   ...orderItems[orders[index]['id']]?.map(
                                           (item) => Text(
-                                              'Medicine name: ${medicines[item['medicine_id']]?.commercialName ?? 'Unknown'}\n'
+                                              'Medicine name: ${medicines[item['medicine_id']]?.scientificName ?? 'Unknown'}\n'
                                                   'Medicine_id: ${item['medicine_id']}\n Quantity: ${item['quantity']}',
                                               style: const TextStyle(
                                                   fontSize: 24,color: Colors.black

@@ -75,7 +75,7 @@ class _MyAppState extends State<MyApp> {
             data: ThemeData(
               primarySwatch: Colors.orange,
               primaryColor: Colors.cyanAccent.shade700,
-              canvasColor: Colors.grey.shade200,
+              canvasColor: Colors.white70,
               secondaryHeaderColor: Colors.orange,
               fontFamily: hasArabicLocale(context) ? 'Tajawal' : 'Avenir',
             ),

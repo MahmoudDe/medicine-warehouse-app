@@ -19,6 +19,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -42,23 +43,26 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(top: 180.0),
+                child: Image.asset(
+                  'assets/images/login1.png',
+                  height: 400,
+                  width: MediaQuery.of(context).size.width ,
+                ),
+              ),
             ]),
-            Image.asset(
-              'assets/images/login.png',
-              height: 250,
-              width: MediaQuery.of(context).size.width * 0.8,
-            ),
-            const SizedBox(height: 20),
+
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.only(right: 25.0, left: 25.0),
               child: CustomTextField(
                   controller: emailController,
                   hintText: tr('enterYourEmail'),
                   prefixIcon: Iconsax.profile_circle),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+              padding: const EdgeInsets.only(left: 25.0, right: 25.0),
               child: CustomTextField(
                 controller: passwordController,
                 hintText: tr("enterYourPassword"),

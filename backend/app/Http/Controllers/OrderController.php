@@ -13,6 +13,15 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
+    /**
+ * Display a listing of the resource for a specific user.
+ */
+public function indexForUser($userId)
+{
+    $orders = Order::where('user_id', $userId)->get();
+    return response()->json($orders);
+}
+
     public function index()
     {
         $orders = Order::all();

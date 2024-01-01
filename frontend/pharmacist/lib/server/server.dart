@@ -2,6 +2,7 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/Order.dart';
 import '../models/medicine.dart';
 
 
@@ -96,52 +97,6 @@ class Server {
     }
   }
 
-  Future<List<Medicine>> getMedicines() async {
-    try {
-      var response = await dio.get('http://localhost:8000/api/medicines');
-      if (response.statusCode == 200) {
-        List<dynamic> medicinesJson = response.data;
-        List<Medicine> medicines = medicinesJson.map((json) {
-          // Create a new Medicine object with the id and maxQuantity from the API
-          var medicine = Medicine.fromJson(json);
-          medicine.medicineId = json['id']; // Set the medicineId to the id from the API
-          medicine.maxQuantity = json['quantity']; // This is for the quantity condition
-          return medicine;
-        }).toList();
-        return medicines;
-      } else {
-        throw Exception('Failed to load medicines');
-      }
-    } catch (e) {
-      print(e);
-      return [];
-    }
-  }
-
-
-  Future<List<Medicine>> getMedicinesByCategory(String category) async {
-    // Retrieve the user token from SharedPreferences
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('token');
-
-    if (token != null) {
-      dio.options.headers['Authorization'] = 'Bearer $token';
-    }
-
-    try {
-      var response = await dio.get('http://localhost:8000/api/medicines/search/$category');
-      if (response.statusCode == 200) {
-        List<dynamic> medicinesJson = response.data;
-        List<Medicine> medicines = medicinesJson.map((json) => Medicine.fromJson(json)).toList();
-        return medicines;
-      } else {
-        throw Exception('Failed to load medicines');
-      }
-    } catch (e) {
-      print(e);
-      return [];
-    }
-  }
   Future postNewOrder(int userId, String status, String date) async {
     try {
       var response = await dio.post(
@@ -193,6 +148,135 @@ class Server {
       print('Error: $e');
     }
   }
+  Future<List<Medicine>> getMedicines() async {
+    try {
+      var response = await dio.get('http://localhost:8000/api/medicines');
+      if (response.statusCode == 200) {
+        List<dynamic> medicinesJson = response.data;
+        List<Medicine> medicines = medicinesJson.map((json) {
+          // Create a new Medicine object with the id and maxQuantity from the API
+          var medicine = Medicine.fromJson(json);
+          medicine.medicineId = json['id']; // Set the medicineId to the id from the API
+          medicine.maxQuantity = json['quantity']; // This is for the quantity condition
+          return medicine;
+        }).toList();
+        return medicines;
+      } else {
+        throw Exception('Failed to load medicines');
+      }
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+  Future<List<Medicine>> getMedicinesByCategory(String category) async {
+    // Retrieve the user token from SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+
+    if (token != null) {
+      dio.options.headers['Authorization'] = 'Bearer $token';
+    }
+
+    try {
+      var response = await dio.get('http://localhost:8000/api/medicines/search/$category');
+      if (response.statusCode == 200) {
+        List<dynamic> medicinesJson = response.data;
+        List<Medicine> medicines = medicinesJson.map((json) => Medicine.fromJson(json)).toList();
+        return medicines;
+      } else {
+        throw Exception('Failed to load medicines');
+      }
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
+
+  Future<List<dynamic>> getOrdersForUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int userId = prefs.getInt('user_id') ?? 0;
+    if (userId == 0) {
+      print('user_id is not set in shared preferences');
+      return [];
+    }
+    final String apiUrl = 'http://localhost:8000/api/orders/user/$userId';
+    try {
+      Response response = await dio.get(apiUrl);
+      if (response.statusCode == 200) {
+        List<dynamic> orders = response.data;
+        for (var order in orders) {
+          int orderId = order['id'] ?? 0;
+          List<dynamic> orderItems = await getOrderItems(orderId);
+          for (var item in orderItems) {
+            int medicineId = item['medicine_id'];
+            Medicine medicine = await getMedicine(medicineId);
+
+            // Print medicine details for debugging
+            print('Medicine Name: ${medicine.scientificName}');
+            print('Medicine Price: ${medicine.price}');
+
+            // Update the quantity of the medicine to the quantity from the order item
+            medicine.quantity = item['quantity'];
+
+            item['medicine'] = medicine.toJson(); // include full medicine details
+            item['cost'] = double.parse(item['cost']);
+          }
+          order['items'] = orderItems;
+        }
+        return orders;
+      } else {
+        print('Failed to get orders with status code: ${response.statusCode}');
+        return [];
+      }
+    } on DioException catch (e) {
+      print('Dio error: $e');
+      throw e;
+    }
+  }
+
+  Future<Medicine> getMedicine(int medicineId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    if (token == null) {
+      print('Token is not set in shared preferences');
+      throw Exception('Token is not set in shared preferences');
+    }
+    final String apiUrl = 'http://localhost:8000/api/medicines/$medicineId';
+    try {
+      Response response = await dio.get(
+        apiUrl,
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'}, // include the token in the request headers
+        ),
+      );
+      if (response.statusCode == 200) {
+        return Medicine.fromJson(response.data);
+      } else {
+        throw Exception('Failed to load medicine with id: $medicineId');
+      }
+    } catch (e) {
+      print(e);
+      throw e; // Rethrow the error to be handled by the caller
+    }
+  }
+
+
+  Future<List<dynamic>> getOrderItems(int orderId) async {
+    try {
+      final String apiUrl = 'http://localhost:8000/api/order_items/order/$orderId';
+      Response response = await dio.get(apiUrl);
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        throw Exception('Failed to get order items with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error getting order items: $e');
+      throw e; // Rethrow the error to be handled by the caller
+    }
+  }
 
 
 
@@ -218,6 +302,7 @@ class Server {
       print('Request failed with error: $e');
     }
   }
+
 
 
 

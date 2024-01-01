@@ -92,8 +92,9 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
       return content;
     }
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.cyan.shade800,
+        backgroundColor: Colors.cyan.shade700,
         elevation: 0.0,
         iconTheme: const IconThemeData(color: Colors.white, size: 28),
         title: Text(

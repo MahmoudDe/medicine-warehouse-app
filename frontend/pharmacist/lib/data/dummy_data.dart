@@ -4,39 +4,39 @@ import 'package:medicine_warehouse/models/medicine.dart';
 List<Category> availableCategories = const [
   Category(
     title: 'Medicines',
-    imageUrl: 'assets/images/1.png',
+    imageUrl: 'assets/images/drugs.png',
   ),
   Category(
     title: 'baby',
-    imageUrl: 'assets/images/2.png',
+    imageUrl: 'assets/images/baby.png',
   ),
   Category(
     title: 'Hair Care',
-    imageUrl: 'assets/images/3.png',
+    imageUrl: 'assets/images/hair-care.png',
   ),
   Category(
     title: 'Daily Care',
-    imageUrl: 'assets/images/4.png',
+    imageUrl: 'assets/images/healthcare.png',
   ),
   Category(
     title: 'Mother & Kid',
-    imageUrl: 'assets/images/5.png',
+    imageUrl: 'assets/images/love.png',
   ),
   Category(
     title: 'Vitamins',
-    imageUrl: 'assets/images/6.png',
+    imageUrl: 'assets/images/vitamins.png',
   ),
   Category(
     title: 'Medical Supplies',
-    imageUrl: 'assets/images/7.png',
+    imageUrl: 'assets/images/medical-history.png',
   ),
   Category(
     title: 'Make-Up',
-    imageUrl: 'assets/images/8.png',
+    imageUrl: 'assets/images/make-up.png',
   ),
   Category(
       title: 'Shampoo & Craims',
-    imageUrl: 'assets/images/9.png',
+    imageUrl: 'assets/images/shampoo.png',
   ),
 ];
 // List<Medicine> availableMedicines = [
