@@ -144,4 +144,4 @@ Route::get('/order_items/order/{order}', [OrderItemController::class, 'getOrder'
 // get report for money
 Route::post('/total', [OrderItemController::class, 'total']);
 // get report for total amount
- Route::get('/quantity', [ReportController::class, 'quantity']);
+ Route::post('/quantity', [OrderItemController::class, 'quantity']);

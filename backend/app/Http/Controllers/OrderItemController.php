@@ -94,17 +94,31 @@ class OrderItemController extends Controller
 
         return response()->json($orderItems);
     }
+    // this method for return all price from database
 
-   
- public function total(Request $request)
+    public function total(Request $request)
     {
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
+        $userId = $request->input('userId');
 
-        $data = DB::table('orders')
+
+        $total_amount = DB::table('orders')
             ->whereBetween('created_at', [$startDate, $endDate])
+            ->where('user_id', $userId)
             ->select(DB::raw('SUM(total_amount) as total_price'))
             ->get();
+
+            
+
+        $data = [
+            "total_amount" => $total_amount[0],
+            "start" => $startDate,
+            "end" => $endDate,
+            "email "=> DB::table('users')
+            ->where('id', $userId)
+            ->value('email'),
+        ];
 
         $responseData = json_encode($data);
 
@@ -113,14 +127,22 @@ class OrderItemController extends Controller
     }
     public function quantity(Request $request)
     {
-        $startDate = $request->input('startDate');
-        $endDate = $request->input('endDate');
-
-        $data = DB::table('order_items')
+        $startDate = $request->string('startDate');
+        $endDate = $request->string('endDate');
+        $userId = $request->input('userId');
+        
+        $quantity = DB::table('order_items')
             ->whereBetween('created_at', [$startDate, $endDate])
+           // ->where('user_id', $userId)
             ->select(DB::raw('SUM(quantity) as total_quantity'))
             ->get();
-
+           
+        $data = [
+            "quantity" => $quantity[0],
+            "start" => $startDate,
+            "end" => $endDate,
+           // "email"=>$email
+        ];
         $responseData = json_encode($data);
 
         return response($responseData, 200)
