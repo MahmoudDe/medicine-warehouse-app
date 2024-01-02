@@ -48,7 +48,7 @@ Route::get('/categories', [CategoryController::class, 'index']);
 /*User Routes*/
 Route::group((['middleware' => ['auth:sanctum']]), function () {
 
-
+    
     // Show By one (Medicine Card) 
     Route::get('/medicines/{medicines}', [MedicineController::class, 'show']);
 
@@ -67,6 +67,9 @@ Route::group((['middleware' => ['auth:sanctum']]), function () {
 
     // Delete User Acount
     Route::delete('/users/delete', [AuthController::class, 'deleteUser']);
+
+     // get report for money
+     Route::post('/total', [OrderItemController::class, 'total']);
 });
 
 // protected for store user
@@ -90,7 +93,10 @@ Route::group((['prefix' => 'admin', 'middleware' => ['auth:sanctum']]), function
 
     // To Create New Category :: Used By Admin  
     Route::post('/categories', [CategoryController::class, 'store']);
-
+   
+   
+     // to Change Status 
+     Route::put('/orders/changeStatus/{order}', [OrderController::class, 'update']);
 
 });
 
@@ -141,7 +147,9 @@ Route::get('/order_items/order/{order}', [OrderItemController::class, 'getOrder'
 
 
 
-// get report for money
-Route::post('/total', [OrderItemController::class, 'total']);
+
 // get report for total amount
- Route::post('/quantity', [OrderItemController::class, 'quantity']);
+Route::post('/quantity', [OrderItemController::class, 'quantity']);
+
+
+

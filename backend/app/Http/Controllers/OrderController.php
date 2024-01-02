@@ -59,7 +59,7 @@ public function indexForUser($userId)
      */
     public function update(Request $request, Order $order)
     {
-        $order->update($request->all());
+        $order->update($request->all()); 
 
         return response()->json($order);
     }
