@@ -9,7 +9,11 @@ class MedicineController extends Controller
 {
     public function index()
     {
-        $medicines = Medicine::all();
+        $medicines = Medicine::all()->filter(function ($medicine) {
+            return $medicine;
+            // return $medicine->quantity > 0;
+
+        });
 
         return response()->json($medicines);
     }
@@ -50,13 +54,18 @@ class MedicineController extends Controller
 
     public function search($search)
     {
-
-        return Medicine::where('category', 'like', '%'.$search.'%')
-            ->orwhere('manufacturer', 'like', '%'.$search.'%')
-            ->orwhere('slug', 'like', '%'.$search.'%')
-            ->orwhere('scientific_name', 'like', '%'.$search.'%')
-            ->orwhere('commercial_name', 'like', '%'.$search.'%')->get();
+        return Medicine::where(function ($query) use ($search) {
+            $query->where('category', 'like', '%' . $search . '%')
+                ->orwhere('manufacturer', 'like', '%' . $search . '%')
+                ->orwhere('slug', 'like', '%' . $search . '%')
+                ->orwhere('scientific_name', 'like', '%' . $search . '%')
+                ->orwhere('commercial_name', 'like', '%' . $search . '%');
+        })->where('quantity', '>', 0) // only include medicines with a quantity greater than 0
+            // })
+            ->get();
     }
+
+
     /**
      * Update the specified resource in storage.
      */
@@ -80,8 +89,13 @@ class MedicineController extends Controller
 
     public function destroy(Medicine $medicine)
     {
+        if ($medicine->quantity <= 0) {
+            return response()->json(['message' => 'Cannot delete medicine with zero quantity'], 400);
+        }
+
         $medicine->delete();
 
         return response()->json(null, 204);
     }
+
 }

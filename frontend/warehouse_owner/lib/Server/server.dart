@@ -130,7 +130,6 @@ class Server {
       throw e;
     }
   }
-
   Future<List<dynamic>> getOrderItems(int orderId) async {
     final String apiUrl = 'http://localhost:8000/api/order_items/order/$orderId';
     try {
@@ -142,7 +141,7 @@ class Server {
         return [];
       }
     } on DioException catch (e) {
-      print('Dio error: $e');
+      print('Dio errorrs: $e');
       throw e; // Rethrow the error to be handled by the caller
     }
   }
@@ -171,7 +170,7 @@ class Server {
         return [];
       }
     } catch (e) {
-      print('Request failed with error: $e');
+      print('Request failed with errorrrrr: $e');
       return [];
     }
   }

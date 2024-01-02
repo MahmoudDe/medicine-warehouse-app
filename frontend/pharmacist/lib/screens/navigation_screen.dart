@@ -49,26 +49,35 @@ class _NavigationScreenState extends State<NavigationScreen> {
             padding: EdgeInsets.all(mediaQuery.height / 60),
             onTabChange: (value) {
               setState(
-                () {
+                    () {
                   Constants.index = value;
                 },
               );
             },
             tabs: [
               GButton(
-                icon: Iconsax.home,
+                icon: Constants.index == 0 ? Iconsax.home_2 : Iconsax.home, // Change the icon based on whether the tab is active
                 text: tr('Home'),
+                textColor: Colors.cyan.shade700,
+                iconActiveColor: Colors.cyan.shade500,
               ),
               GButton(
-                icon: Iconsax.shopping_cart,
+                icon: Constants.index == 1 ? Iconsax.shopping_cart : Iconsax.shopping_cart, // Change the icon based on whether the tab is active
                 text:  tr('Cart'),
+                textColor: Colors.orange.shade500,
+                iconActiveColor: Colors.orange.shade500,
               ),
               GButton(
-                icon: Iconsax.heart,
+                icon: Constants.index == 2 ? Iconsax.heart5 : Iconsax.heart, // Change the icon based on whether the tab is active
                 text: tr('Favorite'),
+                textColor: Colors.red.shade700,
+                iconActiveColor: Colors.red,
+
               ),
             ],
-          ),
+          )
+
+
         ),
       ),
       body: Stack(

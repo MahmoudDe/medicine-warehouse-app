@@ -48,6 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       drawer: NavBar(),
       appBar: AppBar(
+        actions: [
+           Padding(
+             padding: const EdgeInsets.only(right: 15.0),
+             child: Icon(Icons.notifications, color: Colors.yellow.shade600,),
+           ),
+        ],
         backgroundColor: Colors.cyan.shade700,
         elevation: 0.0,
         iconTheme: const IconThemeData(color: Colors.white, size: 28),

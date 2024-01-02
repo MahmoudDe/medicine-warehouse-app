@@ -122,17 +122,17 @@ class Server {
     }
   }
   Future<void> postOrderItems(List<Medicine> items, int orderId) async {
-    try {
-      for (var item in items) {
-        var data = {
-          'order_id': orderId,
-          'medicine_id': item.medicineId,
-          'quantity': item.quantity,
-          'cost': item.price * item.quantity,
-        };
+    for (var item in items) {
+      var data = {
+        'order_id': orderId,
+        'medicine_id': item.medicineId,
+        'quantity': item.quantity,
+        'cost': item.price * item.quantity,
+      };
 
-        print('Posting the following data: $data'); // Print the data
+      print('Posting the following data: $data'); // Print the data
 
+      try {
         var response = await dio.post(
           'http://localhost:8000/api/order_items',
           data: data,
@@ -142,12 +142,15 @@ class Server {
           print('Order item posted successfully');
         } else {
           print('Failed to post order item');
+          throw Exception('Failed to post order item');
         }
+      } catch (e) {
+        print('Error: $e');
+        throw e; // Throw the error
       }
-    } catch (e) {
-      print('Error: $e');
     }
   }
+
   Future<List<Medicine>> getMedicines() async {
     try {
       var response = await dio.get('http://localhost:8000/api/medicines');
@@ -231,7 +234,7 @@ class Server {
         return [];
       }
     } on DioException catch (e) {
-      print('Dio error: $e');
+      print('Dio error from method get ordes for user: $e');
       throw e;
     }
   }

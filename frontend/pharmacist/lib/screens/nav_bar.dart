@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
 import '../data/dummy_data.dart';
 import '../main.dart';
 import '../server/server.dart';
 import 'cart_page.dart';
+
 
 class NavBar extends StatelessWidget {
   @override
@@ -56,6 +56,7 @@ class NavBar extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
+                    backgroundColor: Colors.white,
                     title: Text(tr('chooseLanguage')),
                     content: Column(
                       mainAxisSize: MainAxisSize.min,

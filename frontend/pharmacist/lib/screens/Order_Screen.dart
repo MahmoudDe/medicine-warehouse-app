@@ -31,6 +31,7 @@ class _OrderPageState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white,),
@@ -54,7 +55,7 @@ class _OrderPageState extends State<OrderPage> {
           future: futureOrders,
           builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator(color: Colors.orangeAccent,)); // show loading spinner while waiting for data
+              return Center(child: CircularProgressIndicator(color: Colors.orangeAccent)); // show loading spinner while waiting for data
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}'); // show error message if something went wrong
             } else {
@@ -62,18 +63,23 @@ class _OrderPageState extends State<OrderPage> {
               if (snapshot.data?.isEmpty ?? true) {
                 return Center(child: Text('No orders found')); // show message when there are no orders
               } else {
-                return ListView.builder(
-                  itemCount: snapshot.data?.length,
+                return  ListView.builder(
+                  itemCount: snapshot.data?.length ?? 0,
                   itemBuilder: (context, index) {
-                    var order = snapshot.data?[index];
-                    var medicine = Medicine.fromJson(order['items'][0]['medicine']);
+                    if (snapshot.data != null && snapshot.data!.isNotEmpty) {
+                      var order = snapshot.data?[index];
+                      var medicine = Medicine.fromJson(order['items'][0]['medicine']);
 
-                    print('Medicine Name in ListView.builder: ${medicine.scientificName}');
-                    print('Medicine Price in ListView.builder: ${medicine.price}');
+                      print('Medicine Name in ListView.builder: ${medicine.scientificName}');
+                      print('Medicine Price in ListView.builder: ${medicine.price}');
 
-                    return OrderItemTile(medicine, Order.fromJson(order));
+                      return OrderItemTile(medicine, Order.fromJson(order));
+                    } else {
+                      return Container(); // return an empty container when snapshot.data is null or empty
+                    }
                   },
                 );
+
 
 
               }
@@ -96,7 +102,7 @@ class OrderItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('Medicine Name in OrderItemTile: ${item.scientificName}');
-    print('Medicine Price in OrderItemTile: ${item.price}');
+    print('Medicine Price in OrderItemTile: ${order.totalAmount}');
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -112,7 +118,7 @@ class OrderItemTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(15.0),
           ),
           child: ListTile(
-            leading: Image.asset('assets/images/medicine.png'),
+            leading: Image.asset('assets/images/medicine.png', width: 90,fit: BoxFit.cover,),
             title: Text(
               item.scientificName,
               style: const TextStyle(
@@ -120,7 +126,7 @@ class OrderItemTile extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            subtitle: Text('Quantity: ${item.quantity}\nPrice: ${item.price}'),
+            subtitle: Text('Category: ${item.category} Quantity: ${item.quantity}\nLeft in Warehouse: ${item.maxQuantity}\n Medicine Price: ${item.price}\nTotal Cost: ${order.totalAmount}'),
             trailing: Container(
               width: 90,
               height: 40,

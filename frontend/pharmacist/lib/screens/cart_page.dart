@@ -22,11 +22,19 @@ class CartPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.cyan.shade700,
         title:  Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(Iconsax.shopping_cart4, color: Colors.white,size: 30,),
-            Text(
-                tr('cart'),
-              style: TextStyle(fontFamily: 'Tajawal', color: Colors.white,  fontSize: 27),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.shopping_cart, color: Colors.white,size: 30),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                  tr('cart'),
+                style: TextStyle(fontFamily: 'Tajawal', color: Colors.white,  fontSize: 27),
+              ),
             ),
           ],
         ),
@@ -58,33 +66,88 @@ class CartPage extends StatelessWidget {
           },
         ),
       ),
-        floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          // Fetch user id and date automatically
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          int userId = prefs.getInt('user_id') ?? -1; // replace -1 with a default value or handle it appropriately
-          String date = DateTime.now().toIso8601String();
+        floatingActionButton:FloatingActionButton.extended(
+          onPressed: () async {
+            // Fetch user id and date automatically
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            int userId = prefs.getInt('user_id') ?? -1; // replace -1 with a default value or handle it appropriately
+            String date = DateTime.now().toIso8601String();
 
-          // Place order logic
-          int orderId = await Server().postNewOrder(userId, 'pending', date);
-          if (orderId != -1) {
-            await Server().postOrderItems(Provider.of<CartModel>(context, listen: false).items, orderId);
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Order placed successfully'),
-              ),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Failed to place order'),
-              ),
-            );
-          }
-        },
-        label:  Text(tr('placeOrder'), style: TextStyle(
+            // Place order logic
+            try {
+              int orderId = await Server().postNewOrder(userId, 'pending', date);
+              if (orderId != -1) {
+                try {
+                  await Server().postOrderItems(Provider.of<CartModel>(context, listen: false).items, orderId);
+                  if (Provider.of<CartModel>(context, listen: false).items.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Cart is empty'),
+                      ),
+                    );
+                  } else {
+                    // Clear cart after successful order placement
+                    Provider.of<CartModel>(context, listen: false).clearCart();
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Order placed successfully'),
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Error'),
+                        content: Text('Failed to post order item: $e'),
+                        actions: [
+                          TextButton(
+                            child: Text('OK'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Failed to place order'),
+                  ),
+                );
+              }
+            } on HttpException catch (e) {
+              if (e.message == 400) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: Colors.white,
+                      title: Text('Sorry'),
+                      content: Text('Medicine is no longer available is the warehouse'),
+                      actions: [
+                        TextButton(
+                          child: Text('OK', style: TextStyle(color: Colors.orangeAccent),),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+            }
+          },
+          label:  Text(tr('placeOrder'), style: TextStyle(
             color: Colors.white
-        ),),
+        ),
+          ),
         backgroundColor: Colors.cyan.shade800,
         icon: const Icon(Icons.shopping_cart, color: Colors.white,),
       ),

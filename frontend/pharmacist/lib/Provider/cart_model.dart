@@ -23,11 +23,12 @@ class CartModel extends ChangeNotifier {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text('Alert'),
-              content: const Text('The ordered quantity is more than the available quantity.'),
+              backgroundColor: Colors.white,
+              title: const Text('Sorry',style: TextStyle(color: Colors.cyan),),
+              content: const Text('The ordered quantity is more than the available in the Warehouse.', style: TextStyle(color: Colors.black),),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('OK'),
+                  child: const Text('OK', style: TextStyle(color: Colors.orangeAccent),),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -70,6 +71,10 @@ class CartModel extends ChangeNotifier {
         _items.remove(idKey);
       }
     }
+    notifyListeners();
+  }
+  void clearCart() {
+    _items.clear();
     notifyListeners();
   }
 }

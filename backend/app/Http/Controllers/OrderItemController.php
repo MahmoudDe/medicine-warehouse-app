@@ -25,7 +25,13 @@ class OrderItemController extends Controller
      */
     public function store(Request $request)
     {
-        $price = Medicine::find($request->medicine_id)->price;
+        $medicine = Medicine::find($request->medicine_id);
+        $price = $medicine->price;
+
+        // Check if there's enough quantity of the medicine
+        if ($medicine->quantity < $request->quantity) {
+            return response()->json(['error' => 'Not enough quantity available'], 400);
+        }
 
         $orderItem = OrderItem::create([
             'order_id' => $request->order_id,
@@ -34,11 +40,22 @@ class OrderItemController extends Controller
             'cost' => ($request->quantity * $price)
         ]);
 
+        // Decrease the quantity of the medicine
+        $medicine->decrement('quantity', $request->quantity);
+
+        // // Check if the quantity of the medicine is 0
+        // if ($medicine->quantity == 0) {
+        //     // Delete the medicine from the database
+        //     $medicine->delete();
+        // }
+
         $order = Order::find($request->order_id);
         $order->update(['total_amount' => $order->total_amount + $orderItem->cost]);
 
         return response()->json($orderItem, 201);
     }
+
+
 
     /**
      * Display the specified resource.
