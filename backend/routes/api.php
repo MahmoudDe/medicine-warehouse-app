@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
+use App\Http\Controllers\ReportController;
 
 require __DIR__ . '/auth.php';
 
@@ -135,3 +136,12 @@ Route::delete('order_items/{order_item}', [OrderItemController::class, 'destroy'
 
 // Get OrderItems By order_id
 Route::get('/order_items/order/{order}', [OrderItemController::class, 'getOrder']);
+
+
+
+
+
+// get report for money
+Route::post('/total', [OrderItemController::class, 'total']);
+// get report for total amount
+ Route::get('/quantity', [ReportController::class, 'quantity']);

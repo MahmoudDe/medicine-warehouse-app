@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Medicine;
 use App\Models\Order;
+use App\Models\Medicine;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderItemController extends Controller
 {
@@ -92,5 +93,37 @@ class OrderItemController extends Controller
 
 
         return response()->json($orderItems);
+    }
+
+   
+ public function total(Request $request)
+    {
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+
+        $data = DB::table('orders')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->select(DB::raw('SUM(total_amount) as total_price'))
+            ->get();
+
+        $responseData = json_encode($data);
+
+        return response($responseData, 200)
+            ->header('Content-Type', 'application/json');
+    }
+    public function quantity(Request $request)
+    {
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+
+        $data = DB::table('order_items')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->select(DB::raw('SUM(quantity) as total_quantity'))
+            ->get();
+
+        $responseData = json_encode($data);
+
+        return response($responseData, 200)
+            ->header('Content-Type', 'application/json');
     }
 }
