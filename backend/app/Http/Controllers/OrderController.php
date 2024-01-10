@@ -14,13 +14,13 @@ class OrderController extends Controller
      * Display a listing of the resource.
      */
     /**
- * Display a listing of the resource for a specific user.
- */
-public function indexForUser($userId)
-{
-    $orders = Order::where('user_id', $userId)->get();
-    return response()->json($orders);
-}
+     * Display a listing of the resource for a specific user.
+     */
+    public function indexForUser($userId)
+    {
+        $orders = Order::where('user_id', $userId)->get();
+        return response()->json($orders);
+    }
 
     public function index()
     {
@@ -90,8 +90,16 @@ public function indexForUser($userId)
 
     public function rejectOrder(Order $order)
     {
+        $orderItems = OrderItem::where('order_id', '=', $order->id)->get();
+        foreach ($orderItems as $orderItem) {
+            $medicine = Medicine::where('id', '=', $orderItem->medicine_id)->first();
+            if ($medicine) {
+                $medicine->increment('quantity', $orderItem->quantity);
+            }
+        }
 
         $order->update(['status' => 'Rejected']);
         return response()->json(null, 204);
     }
+
 }

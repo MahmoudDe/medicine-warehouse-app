@@ -55,33 +55,32 @@ class _OrderPageState extends State<OrderPage> {
           future: futureOrders,
           builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator(color: Colors.orangeAccent)); // show loading spinner while waiting for data
+              return Center(child: CircularProgressIndicator(color: Colors.orangeAccent));
             } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}'); // show error message if something went wrong
+              return Text('Error: ${snapshot.error}');
             } else {
-              // snapshot.data contains your list of orders
               if (snapshot.data?.isEmpty ?? true) {
-                return Center(child: Text('No orders found')); // show message when there are no orders
+                return Center(child: Text('No orders found'));
               } else {
-                return  ListView.builder(
+                return ListView.builder(
                   itemCount: snapshot.data?.length ?? 0,
                   itemBuilder: (context, index) {
-                    if (snapshot.data != null && snapshot.data!.isNotEmpty) {
-                      var order = snapshot.data?[index];
-                      var medicine = Medicine.fromJson(order['items'][0]['medicine']);
+                    var order = snapshot.data?[index];
+                    var items = order?['items'] as List<dynamic>?;
+
+                    if (items != null && items.isNotEmpty) {
+                      var medicine = Medicine.fromJson(items[0]['medicine']);
+                      var orderObject = Order.fromJson(order);
 
                       print('Medicine Name in ListView.builder: ${medicine.scientificName}');
                       print('Medicine Price in ListView.builder: ${medicine.price}');
 
-                      return OrderItemTile(medicine, Order.fromJson(order));
+                      return OrderItemTile(medicine, orderObject);
                     } else {
-                      return Container(); // return an empty container when snapshot.data is null or empty
+                      return Container();
                     }
                   },
                 );
-
-
-
               }
             }
           },
@@ -90,7 +89,6 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 }
-
 
 
 class OrderItemTile extends StatelessWidget {
@@ -126,7 +124,7 @@ class OrderItemTile extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            subtitle: Text('Category: ${item.category} Quantity: ${item.quantity}\nLeft in Warehouse: ${item.maxQuantity}\n Medicine Price: ${item.price}\nTotal Cost: ${order.totalAmount}'),
+            subtitle: Text('Order Date: ${order.date}\nCategory: ${item.category} Quantity: ${item.quantity}\nMedicine Price: ${item.price}\nTotal Cost: ${order.totalAmount}'),
             trailing: Container(
               width: 90,
               height: 40,

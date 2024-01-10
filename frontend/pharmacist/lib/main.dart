@@ -11,6 +11,7 @@ import 'Provider/cart_model.dart';
 import 'Provider/navigation_controller.dart';
 import 'screens/Auth/Register.dart';
 import 'screens/Auth/login.dart';
+import 'screens/Report.dart';
 import 'screens/home_page.dart';
 import 'screens/navigation_screen.dart';
 
@@ -97,6 +98,7 @@ class _MyAppState extends State<MyApp> {
           '/register': (context) => RegisterPage(),
           '/home': (context) => HomeScreen(),
           '/order': (context) => OrderPage(),
+          '/report': (context) => OrderReportScreen(),
           '/main': (context) => const NavigationScreen(),
         },
       )

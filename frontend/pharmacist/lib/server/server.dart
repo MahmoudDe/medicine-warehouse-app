@@ -52,21 +52,28 @@ class Server {
         // Handle successful login
         print('Login successful');
 
-        // Save the token and user id in SharedPreferences
+        // Save the token, user id, and email in SharedPreferences
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', response.data['token']);
-        await prefs.setInt('user_id', response.data['user']['id']);
+
+        // Extract and save the user ID with the correct key 'userId'
+        int userId = response.data['user']['id'];
+        await prefs.setInt('userId', userId);
+
+        // Save the email
+        await prefs.setString('email', email);
 
         return response.data;
       } else {
         // Handle other status codes
         print('Login failed with status code: ${response.statusCode}');
       }
-    } on DioException catch (e) {
+    } on DioError catch (e) {
       print('Dio error: $e');
       throw e; // Rethrow the error to be handled by the caller
     }
   }
+
 
 
   Future<void> logoutUser() async {
@@ -96,7 +103,6 @@ class Server {
       throw e;
     }
   }
-
   Future postNewOrder(int userId, String status, String date) async {
     try {
       var response = await dio.post(
@@ -150,7 +156,6 @@ class Server {
       }
     }
   }
-
   Future<List<Medicine>> getMedicines() async {
     try {
       var response = await dio.get('http://localhost:8000/api/medicines');
@@ -195,8 +200,6 @@ class Server {
       return [];
     }
   }
-
-
   Future<List<dynamic>> getOrdersForUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int userId = prefs.getInt('user_id') ?? 0;
@@ -238,7 +241,6 @@ class Server {
       throw e;
     }
   }
-
   Future<Medicine> getMedicine(int medicineId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
@@ -264,8 +266,6 @@ class Server {
       throw e; // Rethrow the error to be handled by the caller
     }
   }
-
-
   Future<List<dynamic>> getOrderItems(int orderId) async {
     try {
       final String apiUrl = 'http://localhost:8000/api/order_items/order/$orderId';

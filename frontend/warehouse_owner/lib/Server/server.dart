@@ -190,7 +190,6 @@ class Server {
       throw e;
     }
   }
-
   Future<void> rejectOrder(int orderId) async {
     final String apiUrl = 'http://localhost:8000/api/orders/$orderId/reject';
     try {
@@ -205,7 +204,35 @@ class Server {
       throw e;
     }
   }
+  Future<void> recieveOrder(int orderId) async {
+    final String apiUrl = 'http://localhost:8000/api/admin/orders/changeStatus/$orderId';
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
 
+    try {
+      Response response = await _dio.put(
+        apiUrl,
+        data: {
+          "status": "received",
+        },
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token", // Add the authorization token here
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        print('Order received successfully');
+      } else {
+        print('Failed to receive order with status code: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      print('Dio error: $e');
+      throw e;
+    }
+  }
 
 
 

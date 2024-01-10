@@ -68,25 +68,22 @@ class CartPage extends StatelessWidget {
       ),
         floatingActionButton:FloatingActionButton.extended(
           onPressed: () async {
-            // Fetch user id and date automatically
             SharedPreferences prefs = await SharedPreferences.getInstance();
-            int userId = prefs.getInt('user_id') ?? -1; // replace -1 with a default value or handle it appropriately
+            int userId = prefs.getInt('user_id') ?? -1;
             String date = DateTime.now().toIso8601String();
 
-            // Place order logic
             try {
               int orderId = await Server().postNewOrder(userId, 'pending', date);
               if (orderId != -1) {
-                try {
-                  await Server().postOrderItems(Provider.of<CartModel>(context, listen: false).items, orderId);
-                  if (Provider.of<CartModel>(context, listen: false).items.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Cart is empty'),
-                      ),
-                    );
-                  } else {
-                    // Clear cart after successful order placement
+                if (Provider.of<CartModel>(context, listen: false).items.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Cart is empty'),
+                    ),
+                  );
+                } else {
+                  try {
+                    await Server().postOrderItems(Provider.of<CartModel>(context, listen: false).items, orderId);
                     Provider.of<CartModel>(context, listen: false).clearCart();
 
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -94,25 +91,25 @@ class CartPage extends StatelessWidget {
                         content: Text('Order placed successfully'),
                       ),
                     );
+                  } catch (e) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Error'),
+                          content: Text('Failed to post order item: $e'),
+                          actions: [
+                            TextButton(
+                              child: Text('OK'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   }
-                } catch (e) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Error'),
-                        content: Text('Failed to post order item: $e'),
-                        actions: [
-                          TextButton(
-                            child: Text('OK'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
                 }
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -129,7 +126,7 @@ class CartPage extends StatelessWidget {
                     return AlertDialog(
                       backgroundColor: Colors.white,
                       title: Text('Sorry'),
-                      content: Text('Medicine is no longer available is the warehouse'),
+                      content: Text('Medicine is no longer available in the warehouse'),
                       actions: [
                         TextButton(
                           child: Text('OK', style: TextStyle(color: Colors.orangeAccent),),
@@ -144,6 +141,7 @@ class CartPage extends StatelessWidget {
               }
             }
           },
+
           label:  Text(tr('placeOrder'), style: TextStyle(
             color: Colors.white
         ),

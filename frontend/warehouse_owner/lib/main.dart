@@ -4,6 +4,7 @@ import 'package:warehouse_owner_app/screens/HomePage.dart';
 import 'package:warehouse_owner_app/screens/LoginPage.dart';
 import 'package:warehouse_owner_app/screens/NewMedicine.dart';
 import 'package:warehouse_owner_app/screens/Orders.dart';
+import 'package:warehouse_owner_app/screens/Report.dart';
 import 'package:warehouse_owner_app/widgets/CategoryInput.dart';
 import 'Provider/Medicine_Provider.dart';
 
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
       initialRoute: initialRoute,
       home:  HomeScreen(),
       routes: {
+      '/report': (context) => OrderReportScreen(),
         '/home': (context) => HomeScreen(),
         '/orders': (context) => OrderPage(),
         '/make_medicine': (context) => NewMedicineForm(),

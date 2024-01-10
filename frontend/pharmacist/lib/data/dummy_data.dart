@@ -35,7 +35,7 @@ List<Category> availableCategories = const [
     imageUrl: 'assets/images/make-up.png',
   ),
   Category(
-      title: 'Shampoo & Craims',
+      title: 'Shampoo',
     imageUrl: 'assets/images/shampoo.png',
   ),
 ];
